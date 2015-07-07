@@ -142,20 +142,33 @@ img {
 	margin: 0 auto;
 	padding: 0 10px;
 }
-#contents .click-here {
+#contents .click-here1 {
 	float: right;
-	background: url(../images/spacecraft.jpg) no-repeat center top;
+	background: url(../images/network-data.jpg) no-repeat center top;
 	display: inline-block;
-	height: 162px;
-	width: 301px;
+	height: 225px;
+	width: 300px;
 	margin-left: 20px;
 	text-align: center;
 }
-#contents .click-here h1 {
+#contents .click-here2 {
+	float: left;
+	background: url(../images/geotime-map.jpg) no-repeat center top;
+	display: inline-block;
+	height: 163px;
+	width: 300px;
+	margin-left: 20px;
+	text-align: center;
+}
+#contents .click-here1 .click-here2 h1 {
 	color: #addcfe;
 	font-style: italic;
 	line-height: 36px;
 	margin: 18px 0;
+}
+.clearfix .paragraph{
+	position: relative;
+	padding-left: 20px;	
 }
 /** adbox **/
 #adbox {
