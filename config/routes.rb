@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  devise_for :users
+  get 'dashboard/index'
+
   get 'index', to: "welcome#index"
   get 'contact', to: "welcome#contact"
   get 'about', to: "welcome#about"
