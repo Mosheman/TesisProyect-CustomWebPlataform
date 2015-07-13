@@ -2,3 +2,9 @@
 	margin-top: 10%;
 	margin-bottom: 20%;
 }
+
+.overlay {
+	position: absolute;
+	z-index: 1000;
+	width: 99%;
+}
