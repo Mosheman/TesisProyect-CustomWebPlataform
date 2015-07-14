@@ -6,24 +6,27 @@
 	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	  <%= csrf_meta_tags %>
 	</head>
-	<body class="skin-blue sidebar-mini">
+	<body>
 
-		<%# if user_signed_in? %>
+		<% if user_signed_in? %>
 
-			<!-- <div class="wrapper"> -->
-				<%#= render 'partials/dashboard_header' %>
-
-		<%# else %>
 			<%= render 'partials/home_header' %>
-		<%# end -%>
+			<div id="wrapper">
+				<%= render 'partials/dashboard_header' %>
+					<%= render 'partials/dashboard_sidebar' %>
+				</nav>
+
+		<% else %>
+			<%= render 'partials/home_header' %>
+		<% end -%>
 
 		<%= render 'partials/messages' %>
 
 		<%= yield %>
 		
-		<%# if user_signed_in? %>
-			<!-- </div> -->
-		<%# end -%>
+		<% if user_signed_in? %>
+			</div>
+		<% end -%>
 		
 		<%= render 'partials/home_footer' %>
 		

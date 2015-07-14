@@ -1,10 +1,47 @@
+.alert {
+	margin-top: 70px;
+}
+
 .mainbox {
 	margin-top: 10%;
 	margin-bottom: 20%;
 }
 
-.overlay {
+.margin-home-layout {
+
+}
+
+.overlay-alert {
 	position: absolute;
-	z-index: 1000;
+	z-index: 10;
 	width: 99%;
+}
+#adbox {
+	margin-top: 0px;
+}
+
+#header {
+	z-index: 100;
+}
+
+#wrapper .alert {
+	margin-top: 125px;
+	width: 87%;
+}
+
+#wrapper .margin-layout {
+	margin-top: 66px;
+}
+
+#wrapper #content .margin-layout {
+  	padding-top: 175px;
+
+}
+
+#page-wrapper {
+	min-height: 800px;
+}
+
+#page-wrapper .margin-layout {
+	margin-top: 130px;
 }
