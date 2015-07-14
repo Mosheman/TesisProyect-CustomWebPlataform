@@ -1,0 +1,30 @@
+<div id="header">
+	<div class="wrapper clearfix">
+		<div id="logo">
+			<a href="<%= index_path %>"><img src="/images/logo.png" alt="LOGO"></a>
+		</div>
+		<ul id="navigation">
+			<li class="selected">
+				<a href="<%= index_path %>">Inicio</a>
+			</li>
+			<li>
+				<a href="#">Herramienta de Visualización</a>
+			</li>
+			<li>
+				<a href="<%= about_path %>">Acerca de</a>
+			</li>
+			<li>
+				<a href="<%= contact_path %>">Contacto</a>
+			</li>
+			<% if user_signed_in? %>
+			  <li>
+			  <%= link_to('Cerrar Sesión', destroy_user_session_path, :method => :delete) %>        
+			  </li>
+			<% else %>
+			  <li>
+			  <%= link_to('Iniciar Sesión', new_user_session_path)  %>  
+			  </li>
+			<% end %>
+		</ul>
+	</div>
+</div>
