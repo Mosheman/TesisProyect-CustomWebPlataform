@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'settings/index'
+
+  get 'searches/index'
+
   devise_for :users, controllers: { sessions: "users/sessions", 
                                       registrations: "users/registrations" }
   get 'dashboard/index'
