@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Consumer key:</strong>
+  <%= @twitter_credential.consumer_key %>
+</p>
+
+<p>
+  <strong>Consumer secret:</strong>
+  <%= @twitter_credential.consumer_secret %>
+</p>
+
+<p>
+  <strong>Access token:</strong>
+  <%= @twitter_credential.access_token %>
+</p>
+
+<p>
+  <strong>Access token secret:</strong>
+  <%= @twitter_credential.access_token_secret %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @twitter_credential.user %>
+</p>
+
+<%= link_to 'Edit', edit_twitter_credential_path(@twitter_credential) %> |
+<%= link_to 'Back', twitter_credentials_path %>

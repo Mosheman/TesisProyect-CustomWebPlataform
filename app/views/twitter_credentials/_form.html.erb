@@ -1,0 +1,43 @@
+<%= form_for(@twitter_credential, html: {class: "form-horizontal"}) do |f| %>
+<!--   <%# if @twitter_credential.errors.any? %>
+    <div id="error_explanation">
+      <h2><%#= pluralize(@twitter_credential.errors.count, "error") %> prohibited this twitter_credential from being saved:</h2>
+
+      <ul>
+      <%# @twitter_credential.errors.full_messages.each do |message| %>
+        <li><%#= message %></li>
+      <%# end %>
+      </ul>
+    </div>
+  <%# end %> -->
+
+  <div class="form-group">
+    <%= f.label "Consumer key *", class: "control-label col-xs-2" %>
+    <div class="col-xs-10">
+      <%= f.text_field :consumer_key, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label "Consumer secret *", class: "control-label col-xs-2" %>
+    <div class="col-xs-10">
+      <%= f.text_field :consumer_secret, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :access_token, class: "control-label col-xs-2" %>
+    <div class="col-xs-10">
+      <%= f.text_field :access_token, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :access_token_secret, class: "control-label col-xs-2" %>
+    <div class="col-xs-10">
+      <%= f.text_field :access_token_secret, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-offset-2 col-xs-10">
+      <%= f.submit "Guardar Credenciales", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

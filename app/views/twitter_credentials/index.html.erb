@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Twitter Credentials</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Consumer key</th>
+      <th>Consumer secret</th>
+      <th>Access token</th>
+      <th>Access token secret</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @twitter_credentials.each do |twitter_credential| %>
+      <tr>
+        <td><%= twitter_credential.consumer_key %></td>
+        <td><%= twitter_credential.consumer_secret %></td>
+        <td><%= twitter_credential.access_token %></td>
+        <td><%= twitter_credential.access_token_secret %></td>
+        <td><%= twitter_credential.user %></td>
+        <td><%= link_to 'Show', twitter_credential %></td>
+        <td><%= link_to 'Edit', edit_twitter_credential_path(twitter_credential) %></td>
+        <td><%= link_to 'Destroy', twitter_credential, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Twitter credential', new_twitter_credential_path %>

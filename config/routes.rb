@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
+  resources :twitter_credentials
   get 'settings/index'
 
   get 'searches/index'
+  post 'searches/search'
 
   devise_for :users, controllers: { sessions: "users/sessions", 
                                       registrations: "users/registrations" }
