@@ -4,7 +4,7 @@ class TwitterCredentialsController < ApplicationController
   # GET /twitter_credentials
   # GET /twitter_credentials.json
   def index
-    @twitter_credentials = TwitterCredential.all
+    @twitter_credential = current_user.twitter_credential
   end
 
   # GET /twitter_credentials/1
@@ -15,7 +15,7 @@ class TwitterCredentialsController < ApplicationController
 
   # GET /twitter_credentials/new
   def new
-    @twitter_credential = TwitterCredential.new
+    current_user.twitter_credential = TwitterCredential.new
   end
 
   # GET /twitter_credentials/1/edit
@@ -26,8 +26,8 @@ class TwitterCredentialsController < ApplicationController
   # POST /twitter_credentials
   # POST /twitter_credentials.json
   def create
-    @twitter_credential = TwitterCredential.new(twitter_credential_params)
-    @twitter_credential.user_id = current_user.id
+    current_user.twitter_credential = TwitterCredential.new(twitter_credential_params) 
+    @twitter_credential = current_user.twitter_credential
 
     respond_to do |format|
       if @twitter_credential.save
@@ -69,7 +69,7 @@ class TwitterCredentialsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_twitter_credential
-      @twitter_credential = TwitterCredential.find(params[:id])
+      @twitter_credential = current_user.twitter_credential
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

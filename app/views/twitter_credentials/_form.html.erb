@@ -1,4 +1,4 @@
-<%= form_for(@twitter_credential, html: {class: "form-horizontal"}) do |f| %>
+<%= form_for(current_user.twitter_credential, html: {class: "form-horizontal"}) do |f| %>
 <!--   <%# if @twitter_credential.errors.any? %>
     <div id="error_explanation">
       <h2><%#= pluralize(@twitter_credential.errors.count, "error") %> prohibited this twitter_credential from being saved:</h2>
