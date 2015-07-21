@@ -6,6 +6,9 @@ gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3'
 gem 'mysql2'
+# Mongoid: MongoDB for Rails
+gem "mongoid"
+gem 'bson_ext'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -29,6 +32,8 @@ gem 'devise'
 gem 'rest-client'
 # Twitter API for Ruby
 gem 'twitter'
+# Date & Time Pickers
+gem 'jquery-timepicker-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
