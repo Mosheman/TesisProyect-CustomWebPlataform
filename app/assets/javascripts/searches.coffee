@@ -5,20 +5,20 @@
 ##	 SETING UP FIELD
 
 # KEYWORDS FOR SEARCH
-$key_words = $('#key_words')
+$key_words = $('#keywords')
 
 ## STOP CRITERIA
 # CHECKBOX TIME ENABLER
 $check_period = $('#check_period')
 
 # INPUT TIME
-$stop_period = $('#stop_period')
+$stop_period = $('#time_stop')
 
 # CHECKBOX DATA ENABLER
 $check_data= $('#check_data')
 
 #INPUT DATA
-$stop_data = $('#stop_data')
+$stop_data = $('#data_stop')
 
 # ACTION FOR SEARCH
 $btn_search = $('#search-btn')

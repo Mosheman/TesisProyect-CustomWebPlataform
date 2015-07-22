@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Twitter Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Connections</th>
+      <th>Description</th>
+      <th>Favourites count</th>
+      <th>Followers count</th>
+      <th>Friends count</th>
+      <th>Lang</th>
+      <th>Listed count</th>
+      <th>Location</th>
+      <th>Name</th>
+      <th>Profile background color</th>
+      <th>Profile link color</th>
+      <th>Profile sidebar border color</th>
+      <th>Profile sidebar fill color</th>
+      <th>Profile text color</th>
+      <th>Statuses count</th>
+      <th>Time zone</th>
+      <th>Utc offset</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @twitter_users.each do |twitter_user| %>
+      <tr>
+        <td><%= twitter_user.connections %></td>
+        <td><%= twitter_user.description %></td>
+        <td><%= twitter_user.favourites_count %></td>
+        <td><%= twitter_user.followers_count %></td>
+        <td><%= twitter_user.friends_count %></td>
+        <td><%= twitter_user.lang %></td>
+        <td><%= twitter_user.listed_count %></td>
+        <td><%= twitter_user.location %></td>
+        <td><%= twitter_user.name %></td>
+        <td><%= twitter_user.profile_background_color %></td>
+        <td><%= twitter_user.profile_link_color %></td>
+        <td><%= twitter_user.profile_sidebar_border_color %></td>
+        <td><%= twitter_user.profile_sidebar_fill_color %></td>
+        <td><%= twitter_user.profile_text_color %></td>
+        <td><%= twitter_user.statuses_count %></td>
+        <td><%= twitter_user.time_zone %></td>
+        <td><%= twitter_user.utc_offset %></td>
+        <td><%= link_to 'Show', twitter_user %></td>
+        <td><%= link_to 'Edit', edit_twitter_user_path(twitter_user) %></td>
+        <td><%= link_to 'Destroy', twitter_user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Twitter user', new_twitter_user_path %>

@@ -1,0 +1,89 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Connections:</strong>
+  <%= @twitter_user.connections %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @twitter_user.description %>
+</p>
+
+<p>
+  <strong>Favourites count:</strong>
+  <%= @twitter_user.favourites_count %>
+</p>
+
+<p>
+  <strong>Followers count:</strong>
+  <%= @twitter_user.followers_count %>
+</p>
+
+<p>
+  <strong>Friends count:</strong>
+  <%= @twitter_user.friends_count %>
+</p>
+
+<p>
+  <strong>Lang:</strong>
+  <%= @twitter_user.lang %>
+</p>
+
+<p>
+  <strong>Listed count:</strong>
+  <%= @twitter_user.listed_count %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @twitter_user.location %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @twitter_user.name %>
+</p>
+
+<p>
+  <strong>Profile background color:</strong>
+  <%= @twitter_user.profile_background_color %>
+</p>
+
+<p>
+  <strong>Profile link color:</strong>
+  <%= @twitter_user.profile_link_color %>
+</p>
+
+<p>
+  <strong>Profile sidebar border color:</strong>
+  <%= @twitter_user.profile_sidebar_border_color %>
+</p>
+
+<p>
+  <strong>Profile sidebar fill color:</strong>
+  <%= @twitter_user.profile_sidebar_fill_color %>
+</p>
+
+<p>
+  <strong>Profile text color:</strong>
+  <%= @twitter_user.profile_text_color %>
+</p>
+
+<p>
+  <strong>Statuses count:</strong>
+  <%= @twitter_user.statuses_count %>
+</p>
+
+<p>
+  <strong>Time zone:</strong>
+  <%= @twitter_user.time_zone %>
+</p>
+
+<p>
+  <strong>Utc offset:</strong>
+  <%= @twitter_user.utc_offset %>
+</p>
+
+<%= link_to 'Edit', edit_twitter_user_path(@twitter_user) %> |
+<%= link_to 'Back', twitter_users_path %>

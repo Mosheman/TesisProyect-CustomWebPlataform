@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
 
+  resources :twitter_users
+  resources :tweets
+  resources :searches
+  post 'searches/searching'
+  #get 'searches/index'
+  
   resources :twitter_credentials
   get 'settings/index'
 
-  get 'searches/index'
-  post 'searches/search'
 
   devise_for :users, controllers: { sessions: "users/sessions", 
                                       registrations: "users/registrations" }
+  
   get 'dashboard/index'
 
   get 'index', to: "welcome#index"

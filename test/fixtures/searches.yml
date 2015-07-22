@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  search_type: 
+  keywords: 
+  georeference: 
+  depth_level: 
+
+two:
+  search_type: 
+  keywords: 
+  georeference: 
+  depth_level: 

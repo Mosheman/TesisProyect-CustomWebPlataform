@@ -35,4 +35,6 @@ class User
   # field :locked_at,       type: Time
 
   embeds_one :twitter_credential
+
+  has_many :searches
 end

@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Favorite count:</strong>
+  <%= @tweet.favorite_count %>
+</p>
+
+<p>
+  <strong>Filter level:</strong>
+  <%= @tweet.filter_level %>
+</p>
+
+<p>
+  <strong>In reply to screen name:</strong>
+  <%= @tweet.in_reply_to_screen_name %>
+</p>
+
+<p>
+  <strong>In reply to status:</strong>
+  <%= @tweet.in_reply_to_status_id %>
+</p>
+
+<p>
+  <strong>In reply to user:</strong>
+  <%= @tweet.in_reply_to_user_id %>
+</p>
+
+<p>
+  <strong>Lang:</strong>
+  <%= @tweet.lang %>
+</p>
+
+<p>
+  <strong>Retweet count:</strong>
+  <%= @tweet.retweet_count %>
+</p>
+
+<p>
+  <strong>Source:</strong>
+  <%= @tweet.source %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @tweet.text %>
+</p>
+
+<%= link_to 'Edit', edit_tweet_path(@tweet) %> |
+<%= link_to 'Back', tweets_path %>

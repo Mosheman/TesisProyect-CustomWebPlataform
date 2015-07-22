@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Search type:</strong>
+  <%= @search.search_type %>
+</p>
+
+<p>
+  <strong>Keywords:</strong>
+  <%= @search.keywords %>
+</p>
+
+<p>
+  <strong>Georeference:</strong>
+  <%= @search.georeference %>
+</p>
+
+<p>
+  <strong>Depth level:</strong>
+  <%= @search.depth_level %>
+</p>
+
+<%= link_to 'Edit', edit_search_path(@search) %> |
+<%= link_to 'Back', searches_path %>

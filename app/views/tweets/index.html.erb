@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Tweets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Favorite count</th>
+      <th>Filter level</th>
+      <th>In reply to screen name</th>
+      <th>In reply to status</th>
+      <th>In reply to user</th>
+      <th>Lang</th>
+      <th>Retweet count</th>
+      <th>Source</th>
+      <th>Text</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tweets.each do |tweet| %>
+      <tr>
+        <td><%= tweet.favorite_count %></td>
+        <td><%= tweet.filter_level %></td>
+        <td><%= tweet.in_reply_to_screen_name %></td>
+        <td><%= tweet.in_reply_to_status_id %></td>
+        <td><%= tweet.in_reply_to_user_id %></td>
+        <td><%= tweet.lang %></td>
+        <td><%= tweet.retweet_count %></td>
+        <td><%= tweet.source %></td>
+        <td><%= tweet.text %></td>
+        <td><%= link_to 'Show', tweet %></td>
+        <td><%= link_to 'Edit', edit_tweet_path(tweet) %></td>
+        <td><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Tweet', new_tweet_path %>
