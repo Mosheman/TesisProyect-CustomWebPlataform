@@ -1,11 +1,17 @@
 class Search
   include Mongoid::Document
   include Mongoid::Timestamps
-  field :search_type, type: String
   field :keywords, type: String
-  field :georeference, type: String
+  # => Georeference
+  field :latitude, type: String
+  field :longitude, type: String
+  field :radius, type: String
+  # => May be tweets search, or user search
+  field :search_type, type: String
+  # => If search_type is user
   field :depth_level, type: Integer
-  field :data_stop, type: Integer, default: 1
+  # => Stop criteria
+  field :data_stop, type: Integer, default: 180
   field :time_stop, type: Time
   field :ilimited, type: Boolean, default: true
 

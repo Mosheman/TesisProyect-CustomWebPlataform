@@ -1,0 +1,11 @@
+<% @search.tweets.each do |db_tweet| %>
+	$('#log-div').prepend("<li class='list-group-item'>"+"<%= db_tweet.twitters_tweet[:text].to_s %>"+"</li>");
+<% end %>
+
+$target = document.getElementById('search-spinner');
+while ($target.hasChildNodes()) {
+    $target.removeChild($target.lastChild);
+}
+
+$('#search-btn').prop('disabled', false);
+$('#search-btn').prop('value', "Buscar");

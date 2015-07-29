@@ -46,6 +46,18 @@ $check_data.click ->
 
 # BTN_SEARCH ON CLICK
 #$btn_search.on 'click', (e) ->
+#	$btn_search.disabled = true
+#	$btn_search.value = "Buscando..."
+#	return
+
+#$(document).on 'ready', ()->
+$('#search-form').one 'submit', ->
+	$(this).find('input[type="submit"]').prop 'disabled', "disabled"
+	$(this).find('input[type="submit"]').prop 'value', "Buscando..."
+	target = document.getElementById('search-spinner')
+	spinner = new Spinner().spin(target)
+	return
+
 #	currentValue = $key_words.val()
 #	JSONquery = { key_words: {} }
 #	JSONquery.key_words = currentValue

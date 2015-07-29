@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :twitter_users
   resources :tweets
   resources :searches
-  post 'searches/searching'
+  #post 'searches/start_search'
   #get 'searches/index'
   
   resources :twitter_credentials

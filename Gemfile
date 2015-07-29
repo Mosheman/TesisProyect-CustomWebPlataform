@@ -32,8 +32,12 @@ gem 'devise'
 gem 'rest-client'
 # Twitter API for Ruby
 gem 'twitter'
+# Parser
+gem 'twitter-text'
 # Date & Time Pickers
 gem 'jquery-timepicker-rails'
+# Spiner on Loading
+gem 'spinjs-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

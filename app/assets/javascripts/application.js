@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require bootstrap.min
 //= require jquery.timepicker.js
+//= require spin
 //= require searches
 //= require settings
 //= require_tree .
