@@ -1,24 +1,96 @@
-<p id="notice"><%= notice %></p>
+<div id="page-wrapper">
+    <div class="container-fluid margin-layout">
 
-<p>
-  <strong>Search type:</strong>
-  <%= @search.search_type %>
-</p>
+    <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Búsqueda 
+                    <% @search.keywords.split(" ").each do |keyword| %>
+                    	<small><span class="badge"><%= keyword %></span></small>
+                    <% end %>                    
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <%= link_to "Inicio", dashboard_index_path %>
+                    </li>
+                    <li>
+                        <i class="glyphicon glyphicon-th-list"></i>  <%= link_to "Búsquedas", searches_path %>
+                    </li>
+                    <li class="active">
+                        <i class="glyphicon glyphicon-search"></i> Búsqueda
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
 
-<p>
-  <strong>Keywords:</strong>
-  <%= @search.keywords %>
-</p>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-primary">
+				<div class="panel-heading">Detalle de Búsqueda</div>
+				<div class="panel-body">
+					<p>
+					  <strong>Search type:</strong>
+                      <%= @search.search_type ? @search.search_type : "Indefinido" %>
+					</p>
 
-<p>
-  <strong>Georeference:</strong>
-  <%= @search.georeference %>
-</p>
+					<p>
+					  <strong>Keywords:</strong>
+					  <%= @search.keywords %>
+					</p>
 
-<p>
-  <strong>Depth level:</strong>
-  <%= @search.depth_level %>
-</p>
+					<p>
+					  <strong>Georeference (lat, lon; rad):</strong>
+					  <% if @search.latitude or @search.longitude or @search.radius %>
+                        <%= @search.latitude %>, <%= @search.longitude %>; <%= @search.radius %>km
+                      <% else %>
+                        Indefinido
+                      <% end %>
+					</p>
 
-<%= link_to 'Edit', edit_search_path(@search) %> |
-<%= link_to 'Back', searches_path %>
+					<p>
+					  <strong>Depth level:</strong>
+					  <%= @search.depth_level ? @search.depth_level : "Indefinido" %>
+					</p>
+
+					<%= link_to 'Editar', edit_search_path(@search), class: "btn btn-warning btn-sm" %>
+				</div>
+				<!-- /.panel-body -->
+
+				<table class="table">
+					<thead>
+					  <tr>
+					    <th>ID</th>
+					    <th>Text</th>
+					    <th>Georeference (lat, lon)</th>
+					    <th>Created At</th>
+					    <th colspan="3"></th>
+					  </tr>
+					</thead>
+
+					<tbody>
+					  <% @search.tweets.each do |aps_tweet| %>
+					    <tr>
+					      <td><%= aps_tweet.twitters_tweet[:id_str] %></td>
+					      <td><%= aps_tweet.twitters_tweet[:text] %></td>
+					      <% if aps_tweet.twitters_tweet[:geo] %>
+					        <td><%= aps_tweet.twitters_tweet[:geo][:coordinates][0] %>, <%= aps_tweet.twitters_tweet[:geo][:coordinates][1] %></td>
+					      <% else %>
+					        <td>Indefinido</td>
+					      <% end %>
+					      <td><%= aps_tweet.twitters_tweet[:created_at] %></td>
+					      <td><%= link_to 'Ver', search_tweet_path(@search, aps_tweet), class: "btn btn-info btn-sm" %></td>
+					      <td><%= link_to 'Editar', edit_search_tweet_path(@search, aps_tweet), class: "btn btn-warning btn-sm" %></td>
+					      <td><%= link_to 'Eliminar', search_tweets_path(@search, aps_tweet), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %></td>
+					    </tr>
+					  <% end %>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+		<!-- /.row -->
+
+	</div>
+</div>

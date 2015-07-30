@@ -41,8 +41,7 @@ class SearchesController < ApplicationController
 			retrived_tweets.each do |tweet| 
 				num_attempts += 1
 				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
-				tweet_app = @search.tweets.last
-				tweet_app.save
+				#tweet_app = @search.tweets.last
 			end
 		rescue Twitter::Error::TooManyRequests => error
 			if num_attempts <= max_attempts
@@ -60,10 +59,6 @@ class SearchesController < ApplicationController
 	# GET /searches.json
 	def index
 		@searches = Search.all
-		@search = Search.new
-
-		n_calls = rate_limit_status	
-		@n_calls = 4
 	end
 
 	# GET /searches/1
@@ -73,7 +68,8 @@ class SearchesController < ApplicationController
 
 	# GET /searches/new
 	def new
-		@search = Search.new
+		n_calls = rate_limit_status	
+		@n_calls = 4
 	end
 
 	# GET /searches/1/edit
@@ -86,7 +82,7 @@ class SearchesController < ApplicationController
 		current_user.searches << Search.new(search_params)
 		@search = current_user.searches.last
 		respond_to do |format|
-		  if @search.save
+		  if @search
 		  	start_search
 		    format.js
 		    # format.html { redirect_to @search, notice: 'Search was successfully executed.' }
@@ -115,6 +111,9 @@ class SearchesController < ApplicationController
 	# DELETE /searches/1
 	# DELETE /searches/1.json
 	def destroy
+		@search.tweets.each do |t|
+			t.destroy
+		end
 		@search.destroy
 		respond_to do |format|
 		  format.html { redirect_to searches_url, notice: 'Search was successfully destroyed.' }
