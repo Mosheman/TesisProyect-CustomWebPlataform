@@ -41,7 +41,6 @@ class SearchesController < ApplicationController
 			retrived_tweets.each do |tweet| 
 				num_attempts += 1
 				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
-				#tweet_app = @search.tweets.last
 			end
 		rescue Twitter::Error::TooManyRequests => error
 			if num_attempts <= max_attempts

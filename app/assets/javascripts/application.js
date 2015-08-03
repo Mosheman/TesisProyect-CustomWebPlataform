@@ -15,6 +15,8 @@
 //= require turbolinks
 //= require bootstrap.min
 //= require jquery.timepicker.js
+//= require underscore
+//= require gmaps/google
 //= require spin
 //= require searches
 //= require settings

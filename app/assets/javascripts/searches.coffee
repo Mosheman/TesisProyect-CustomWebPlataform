@@ -57,9 +57,68 @@ $('#search-form').one 'submit', ->
 	spinner = new Spinner().spin(target)
 	return
 
-#	currentValue = $key_words.val()
-#	JSONquery = { key_words: {} }
-#	JSONquery.key_words = currentValue
-#	getFilteredValuesJSON "/searches/search", JSONquery
+handler = Gmaps.build('Google')
+handler.buildMap {
+  provider: {}
+  internal: id: 'map'
+}, ->
+  markers = handler.addMarkers([ {
+    'lat': 0
+    'lng': 0
+    'picture':
+      'url': 'https://addons.cdn.mozilla.net/img/uploads/addon_icons/13/13028-64.png'
+      'width': 36
+      'height': 36
+    'infowindow': 'hello!'
+  } ])
+  handler.bounds.extendWith markers
+  handler.fitMapToBounds()
+  return
 
-	# console.log currentValue
+#$('#myModal').on 'shown', ->
+#  map = new google.maps.Map(document.getElementById("map"),mapProp)
+#  google.maps.event.trigger map, 'resize'
+#  return
+
+map = undefined
+myCenter = new (google.maps.LatLng)(53, -1.33)
+marker = new (google.maps.Marker)(position: myCenter)
+
+initialize = ->
+  mapProp = 
+    center: myCenter
+    zoom: 14
+    draggable: true
+    scrollwheel: true
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  map = new (google.maps.Map)(document.getElementById('map'), mapProp)
+  marker.setMap map
+  google.maps.event.addListener marker, 'click', ->
+    infowindow.setContent contentString
+    infowindow.open map, marker
+    return
+  return
+
+resizeMap = ->
+  if typeof map == 'undefined'
+    return
+  setTimeout (->
+    resizingMap()
+    return
+  ), 400
+  return
+
+resizingMap = ->
+  if typeof map == 'undefined'
+    return
+  center = map.getCenter()
+  google.maps.event.trigger map, 'resize'
+  map.setCenter center
+  return
+
+google.maps.event.addDomListener window, 'load', initialize
+google.maps.event.addDomListener window, 'resize', resizingMap()
+$('#myModal').on 'show.bs.modal', ->
+  #Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
+  resizeMap()
+  return
