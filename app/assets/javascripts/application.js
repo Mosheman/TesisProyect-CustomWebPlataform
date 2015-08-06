@@ -18,6 +18,7 @@
 //= require underscore
 //= require gmaps/google
 //= require spin
+//= require bootstrap-slider
 //= require searches
 //= require settings
 //= require_tree .

@@ -14,5 +14,6 @@
  *= require_self
  *= require main
  *= require jquery.timepicker.css
+ *= require bootstrap-slider
  *= require_tree .
  */

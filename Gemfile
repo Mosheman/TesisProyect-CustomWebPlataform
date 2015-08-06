@@ -41,6 +41,8 @@ gem 'spinjs-rails'
 # Google maps
 gem 'gmaps4rails'
 gem 'underscore-rails'
+# Slider 
+gem 'bootstrap-slider-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

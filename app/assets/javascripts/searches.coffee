@@ -57,37 +57,55 @@ $('#search-form').one 'submit', ->
 	spinner = new Spinner().spin(target)
 	return
 
-handler = Gmaps.build('Google')
-handler.buildMap {
-  provider: {}
-  internal: id: 'map'
-}, ->
-  markers = handler.addMarkers([ {
-    'lat': 0
-    'lng': 0
-    'picture':
-      'url': 'https://addons.cdn.mozilla.net/img/uploads/addon_icons/13/13028-64.png'
-      'width': 36
-      'height': 36
-    'infowindow': 'hello!'
-  } ])
-  handler.bounds.extendWith markers
-  handler.fitMapToBounds()
-  return
-
-#$('#myModal').on 'shown', ->
-#  map = new google.maps.Map(document.getElementById("map"),mapProp)
-#  google.maps.event.trigger map, 'resize'
+#handler = Gmaps.build('Google')
+#handler.buildMap {
+#  provider: {}
+#  internal: id: 'map'
+#}, ->
+#  markers = handler.addMarkers([ {
+#    'lat': 0
+#    'lng': 0
+#    'picture':
+#      'url': 'https://addons.cdn.mozilla.net/img/uploads/addon_icons/13/13028-64.png'
+#      'width': 36
+#      'height': 36
+#    'infowindow': 'hello!'
+#  } ])
+#  handler.bounds.extendWith markers
+#  handler.fitMapToBounds()
 #  return
 
+# SLIDER FUNCTIONS
+
+updateRadius = (circle, rad) ->
+  circle.setRadius rad*1000 #meters to kms
+  return
+
+setSliderListener = (circle) ->
+  $('#radius-slider').on 'slide', (slideEvt) ->
+    updateRadius circle, slideEvt.value
+    return
+
+$('#radius-slider').slider
+  orientation: 'horizontal'
+  max: 100
+  min: 1
+  value: 10
+
+$('#radius-slider').slider formatter: (value) ->
+  'Radio: ' + value + 'kms'
+
+# GOOGLE MAP FUNCTIONS
 map = undefined
-myCenter = new (google.maps.LatLng)(53, -1.33)
-marker = new (google.maps.Marker)(position: myCenter)
+myCenter = new (google.maps.LatLng)(-33.448889699999995, -70.6692655)
+marker = new (google.maps.Marker)(
+  position: myCenter
+  draggable: true)
 
 initialize = ->
   mapProp = 
     center: myCenter
-    zoom: 14
+    zoom: 10
     draggable: true
     scrollwheel: true
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -97,6 +115,22 @@ initialize = ->
     infowindow.setContent contentString
     infowindow.open map, marker
     return
+  google.maps.event.addListener map, 'click', (event) ->
+    marker.setPosition(event.latLng)
+    map.setCenter(event.latLng)
+    return
+  
+  # Add circle overlay and bind to marker
+  circle = new (google.maps.Circle)(
+    map: map
+    clickable: false
+    radius: 10000
+    fillColor: '#55BF3B'
+    strokeColor: '#313131'
+    strokeOpacity: .4
+    strokeWeight: .8)
+  circle.bindTo 'center', marker, 'position'
+  setSliderListener circle
   return
 
 resizeMap = ->
@@ -118,7 +152,11 @@ resizingMap = ->
 
 google.maps.event.addDomListener window, 'load', initialize
 google.maps.event.addDomListener window, 'resize', resizingMap()
+
+
+# SHOW MODAL
 $('#myModal').on 'show.bs.modal', ->
   #Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
   resizeMap()
   return
+
