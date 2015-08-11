@@ -102,6 +102,11 @@ marker = new (google.maps.Marker)(
   position: myCenter
   draggable: true)
 
+setValueLatLng = (lat, lng) ->
+  $('#latitude').prop 'value', lat
+  $('#longitude').prop 'value', lng
+  return
+
 initialize = ->
   mapProp = 
     center: myCenter
@@ -111,13 +116,20 @@ initialize = ->
     mapTypeId: google.maps.MapTypeId.ROADMAP
   map = new (google.maps.Map)(document.getElementById('map'), mapProp)
   marker.setMap map
-  google.maps.event.addListener marker, 'click', ->
-    infowindow.setContent contentString
-    infowindow.open map, marker
+  google.maps.event.addListener marker, 'drag', (event) ->
+    #infowindow.setContent contentString
+    #infowindow.open map, marker
+    setValueLatLng event.latLng.lat(), event.latLng.lng()
     return
+
+  google.maps.event.addListener marker, 'dragend', (event) ->
+    setValueLatLng event.latLng.lat(), event.latLng.lng()
+    return
+  
   google.maps.event.addListener map, 'click', (event) ->
     marker.setPosition(event.latLng)
     map.setCenter(event.latLng)
+    setValueLatLng event.latLng.lat(), event.latLng.lng()
     return
   
   # Add circle overlay and bind to marker
@@ -160,3 +172,7 @@ $('#myModal').on 'show.bs.modal', ->
   resizeMap()
   return
 
+# DOM Ready
+$ ->
+  $("#latitude").prop 'value', "-33.448889699999995"
+  $("#longitude").prop 'value', "-70.6692655"
