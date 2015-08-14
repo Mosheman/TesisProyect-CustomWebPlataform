@@ -38,17 +38,26 @@ $check_data.click ->
   $stop_data.attr 'disabled', !@checked
   return
 
-#getFilteredValuesJSON = (url, params) ->
-#	$.ajax url,
-#		type: 'GET',
-#		dataType: 'jsonp',
-#		data: params
+getSearchTypeFormJSON = (url, params) ->
+	$.ajax url,
+		type: 'GET',
+		dataType: 'json',
+		data: params
 
-# BTN_SEARCH ON CLICK
-#$btn_search.on 'click', (e) ->
-#	$btn_search.disabled = true
-#	$btn_search.value = "Buscando..."
-#	return
+
+# DOM Ready
+$ ->
+  $("#latitude").prop 'value', "-33.448889699999995"
+  $("#longitude").prop 'value', "-70.6692655"
+  
+  ## BTN SEARCH-TYPE ON CLICK
+  ## searchTypeUrl = $('#search-type-url-forms').data('url-action')
+  #$(".search-type-option").on 'click', (e) ->
+  #  searchtype_name = $(this).data('searchtype-name')
+  #  searchtype_url = $(this).data('searchtype-url')
+  #  JSONquery = {search_type: searchtype_name}
+  #  console.log searchtype_url
+  #  getSearchTypeFormJSON searchtype_url, JSONquery
 
 $('#search-form').one 'submit', ->
 	$(this).find('input[type="submit"]').prop 'disabled', "disabled"
@@ -171,8 +180,3 @@ $('#myModal').on 'show.bs.modal', ->
   #Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
   resizeMap()
   return
-
-# DOM Ready
-$ ->
-  $("#latitude").prop 'value', "-33.448889699999995"
-  $("#longitude").prop 'value', "-70.6692655"

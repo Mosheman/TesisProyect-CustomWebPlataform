@@ -65,10 +65,24 @@ class SearchesController < ApplicationController
 	def show
 	end
 
+	def set_searchtype 
+		
+		stype = params[:search_type]
+		@searchtype_selected = SearchType.new stype[:label], stype[:active], stype[:path_name], stype[:name] 
+		
+		respond_to do |format|
+		    format.js
+		end
+	end
+
 	# GET /searches/new
 	def new
 		n_calls = rate_limit_status	
 		@n_calls = 4
+
+		@search_types = [SearchType.new("Palabras clave", true, "keywords_searches", "keywords"),
+							SearchType.new("Usuarios", false, "tusers_searches", "tusers")]
+		@searchtype_selected = SearchType.new("Palabras clave", true, "keywords_searches", "keywords")
 	end
 
 	# GET /searches/1/edit

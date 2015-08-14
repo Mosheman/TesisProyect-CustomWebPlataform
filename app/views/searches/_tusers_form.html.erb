@@ -1,0 +1,172 @@
+
+<%= form_tag({controller: "searches", action: "create"}, 
+                        method: "post", 
+                        class: "form-horizontal", 
+                        remote: true,
+                        id: "search-form") do %>
+
+  <div class="form-group">
+    <%= label_tag :tusers, "Nombre usuario", class: "control-label col-xs-2" %>
+    <div class="col-xs-7">
+      <%= text_field_tag :tusers, nil, class: "form-control" %>
+    </div>
+
+    <div class="col-xs-2">
+      <%= submit_tag "Buscar", class: "btn btn-warning search-submit", id: "search-btn" %>
+    </div>
+    
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :search_lvl, "Nivel profundidad", class: "control-label col-xs-2" %>
+    <div class="col-xs-7">
+      <%= number_field_tag :search_lvl, 1, class: "form-control", min: 1 %>
+    </div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading">Georeferencias</div>
+    <div class="panel-body">
+
+        <div class="form-group">
+          <%= label_tag :zone, "Zona", class: "control-label col-xs-2" %>
+          <div class="col-xs-6">
+            <%= text_field_tag :zone, nil, class: "form-control", placeholder: "Ciudad, Región o País" %>
+          </div>
+          <div class="col-xs-3">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
+              <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Área de búsqueda
+            </button>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Georeferencia</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div id="map"></div>
+                  </div>
+
+                  <div class="col-xs-6">
+
+                    <div class="form-group">
+                      <%= label_tag :modal_zone, "Zona", class: "control-label col-xs-2" %>
+                      <div class="col-xs-6">
+                        <%= text_field_tag :modal_zone, nil, class: "form-control", placeholder: "Ciudad, Región o País" %>
+                      </div>
+                    </div>
+
+                    <div class="form-group">                    
+                      <%= label_tag :radius, "Radio (kms)", class: "control-label col-xs-2" %>
+                      <div class="col-xs-3 slider-box">
+                        <input id="radius-slider" class"form-control" />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <%= label_tag :latitude, "Latitud", class: "control-label col-xs-2" %>
+                      <div class="col-xs-4">
+                        <%= text_field_tag :latitude, nil, class: "form-control", disabled: "disabled" %>
+                      </div>
+                      <div class="col-xs-3">
+                        <%= label_tag :measurement_lat, "Grados", class: "control-label" %>
+                      </div> 
+                    </div>
+              
+                    <div class="form-group">
+                      <%= label_tag :longitude, "Longitud", class: "control-label col-xs-2" %>
+                      <div class="col-xs-4">
+                        <%= text_field_tag :longitude, nil, class: "form-control", disabled: "disabled" %>
+                      </div>
+                      <div class="col-xs-3">
+                        <%= label_tag :measurement_long, "Grados", class: "control-label" %>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div> <!-- .row -->
+              
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading">Criterios de parada</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <%= label_tag :time_stop, "Tiempo", class: "control-label col-xs-2" %>
+        <div class="col-xs-1">
+          <%= check_box_tag :check_period, 'yes', false, class: "checkbox-reduce form-control" %>
+        </div>
+        <div class="col-xs-3">
+          <%= text_field_tag :time_stop, nil, options: {:step => 1}, class: "hasDatepicker form-control", placeholder: "HH:mm:ss", disabled: "disabled" %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= label_tag :data_stop, "Datos", class: "control-label col-xs-2" %>
+        <div class="col-xs-1">
+          <%= check_box_tag :check_data, 'yes', false, class: "checkbox-reduce form-control" %>
+        </div>
+        <div class="col-xs-3">
+          <%= number_field_tag :data_stop, nil, min: 0, class: "form-control", placeholder: "Cantidad de datos", disabled: "disabled" %>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  
+<% end %>
+
+<!-- 
+<%#= form_for(@search) do |f| %>
+  <%# if @search.errors.any? %>
+    <div id="error_explanation">
+      <h2><%#= pluralize(@search.errors.count, "error") %> prohibited this search from being saved:</h2>
+
+      <ul>
+      <%# @search.errors.full_messages.each do |message| %>
+        <li><%#= message %></li>
+      <%# end %>
+      </ul>
+    </div>
+  <%# end %>
+
+  <div class="field">
+    <%#= f.label :search_type %><br>
+    <%#= f.text_field :search_type %>
+  </div>
+  <div class="field">
+    <%#= f.label :keywords %><br>
+    <%#= f.text_field :keywords %>
+  </div>
+  <div class="field">
+    <%#= f.label :georeference %><br>
+    <%#= f.text_field :georeference %>
+  </div>
+  <div class="field">
+    <%#= f.label :depth_level %><br>
+    <%#= f.text_field :depth_level %>
+  </div>
+  <div class="actions">
+    <%#= f.submit %>
+  </div>
+<%# end %>
+ -->

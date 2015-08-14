@@ -1,0 +1,4 @@
+$("#searchtype-form").html("");
+$("#searchtype-select").html("<%= escape_javascript(@searchtype_selected.label.to_s) %>");
+$("#searchtype-form").html("<%= escape_javascript(render partial: @searchtype_selected.name.to_s+'_form') %>"); 
+$('[data-toggle="dropdown"]').parent().removeClass('open');
