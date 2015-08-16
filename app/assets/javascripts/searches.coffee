@@ -174,6 +174,10 @@ resizingMap = ->
 google.maps.event.addDomListener window, 'load', initialize
 google.maps.event.addDomListener window, 'resize', resizingMap()
 
+#$(".searchtype-option").click ->
+#  google.maps.event.addDomListener window, 'load', initialize
+#  google.maps.event.addDomListener window, 'resize', resizingMap()  
+#  return
 
 # SHOW MODAL
 $('#myModal').on 'show.bs.modal', ->

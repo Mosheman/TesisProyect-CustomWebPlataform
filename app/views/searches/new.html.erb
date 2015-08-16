@@ -26,7 +26,7 @@
                           <ul class="dropdown-menu">
                             <% @search_types.each do |st| %>
                                 <li>
-                                    <%= link_to st.label.to_s, set_searchtype_searches_path(:search_type => st.get_attributes), :remote => true %>
+                                    <%= link_to st.label.to_s, set_searchtype_searches_path(:search_type => st.get_attributes), :remote => true, :class => "searchtype-option" %>
                                 </li>
                             <% end %>
                           </ul>
@@ -43,9 +43,9 @@
                 	<div class="panel-heading">Parámetros de búsqueda</div>
                     <div class="panel-body">
 				        
-                        <div id="searchtype-form">
-					       <%= render partial: @searchtype_selected.name+"_form" %>
-                        </div>
+                        <!-- <div id="searchtype-form"> -->
+					       <%= render partial: "form" %>
+                        <!-- </div> -->
 
 					</div>
 				</div>
