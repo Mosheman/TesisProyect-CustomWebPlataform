@@ -38,26 +38,18 @@ $check_data.click ->
   $stop_data.attr 'disabled', !@checked
   return
 
-getSearchTypeFormJSON = (url, params) ->
-	$.ajax url,
-		type: 'GET',
-		dataType: 'json',
-		data: params
+#getSearchTypeFormJSON = (url, params) ->
+#	$.ajax url,
+#		type: 'GET',
+#		dataType: 'json',
+#		data: params
 
 
 # DOM Ready
-$ ->
-  $("#latitude").prop 'value', "-33.448889699999995"
-  $("#longitude").prop 'value', "-70.6692655"
+# $ ->
+#   $("#latitude").prop 'value', "-33.448889699999995"
+#   $("#longitude").prop 'value', "-70.6692655"
   
-  ## BTN SEARCH-TYPE ON CLICK
-  ## searchTypeUrl = $('#search-type-url-forms').data('url-action')
-  #$(".search-type-option").on 'click', (e) ->
-  #  searchtype_name = $(this).data('searchtype-name')
-  #  searchtype_url = $(this).data('searchtype-url')
-  #  JSONquery = {search_type: searchtype_name}
-  #  console.log searchtype_url
-  #  getSearchTypeFormJSON searchtype_url, JSONquery
 
 $('#search-form').one 'submit', ->
 	$(this).find('input[type="submit"]').prop 'disabled', "disabled"
@@ -66,119 +58,101 @@ $('#search-form').one 'submit', ->
 	spinner = new Spinner().spin(target)
 	return
 
-#handler = Gmaps.build('Google')
-#handler.buildMap {
-#  provider: {}
-#  internal: id: 'map'
-#}, ->
-#  markers = handler.addMarkers([ {
-#    'lat': 0
-#    'lng': 0
-#    'picture':
-#      'url': 'https://addons.cdn.mozilla.net/img/uploads/addon_icons/13/13028-64.png'
-#      'width': 36
-#      'height': 36
-#    'infowindow': 'hello!'
-#  } ])
-#  handler.bounds.extendWith markers
-#  handler.fitMapToBounds()
-#  return
-
 # SLIDER FUNCTIONS
 
-updateRadius = (circle, rad) ->
-  circle.setRadius rad*1000 #meters to kms
-  return
+# updateRadius = (circle, rad) ->
+#   circle.setRadius rad*1000 #meters to kms
+#   return
 
-setSliderListener = (circle) ->
-  $('#radius-slider').on 'slide', (slideEvt) ->
-    updateRadius circle, slideEvt.value
-    return
+# setSliderListener = (circle) ->
+#   $('#radius-slider').on 'slide', (slideEvt) ->
+#     updateRadius circle, slideEvt.value
+#     return
 
-$('#radius-slider').slider
-  orientation: 'horizontal'
-  max: 100
-  min: 1
-  value: 10
+# $('#radius-slider').slider
+#   orientation: 'horizontal'
+#   max: 100
+#   min: 1
+#   value: 10
 
-$('#radius-slider').slider formatter: (value) ->
-  'Radio: ' + value + 'kms'
+# $('#radius-slider').slider formatter: (value) ->
+#   'Radio: ' + value + 'kms'
 
-# GOOGLE MAP FUNCTIONS
-map = undefined
-myCenter = new (google.maps.LatLng)(-33.448889699999995, -70.6692655)
-marker = new (google.maps.Marker)(
-  position: myCenter
-  draggable: true)
+# # GOOGLE MAP FUNCTIONS
+# map = undefined
+# myCenter = new (google.maps.LatLng)(-33.448889699999995, -70.6692655)
+# marker = new (google.maps.Marker)(
+#   position: myCenter
+#   draggable: true)
 
-setValueLatLng = (lat, lng) ->
-  $('#latitude').prop 'value', lat
-  $('#longitude').prop 'value', lng
-  return
+# setValueLatLng = (lat, lng) ->
+#   $('#latitude').prop 'value', lat
+#   $('#longitude').prop 'value', lng
+#   return
 
-initialize = ->
-  mapProp = 
-    center: myCenter
-    zoom: 10
-    draggable: true
-    scrollwheel: true
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  map = new (google.maps.Map)(document.getElementById('map'), mapProp)
-  marker.setMap map
-  google.maps.event.addListener marker, 'drag', (event) ->
-    #infowindow.setContent contentString
-    #infowindow.open map, marker
-    setValueLatLng event.latLng.lat(), event.latLng.lng()
-    return
+# initialize = ->
+#   mapProp = 
+#     center: myCenter
+#     zoom: 10
+#     draggable: true
+#     scrollwheel: true
+#     mapTypeId: google.maps.MapTypeId.ROADMAP
+#   map = new (google.maps.Map)(document.getElementById('map'), mapProp)
+#   marker.setMap map
+#   google.maps.event.addListener marker, 'drag', (event) ->
+#     #infowindow.setContent contentString
+#     #infowindow.open map, marker
+#     setValueLatLng event.latLng.lat(), event.latLng.lng()
+#     return
 
-  google.maps.event.addListener marker, 'dragend', (event) ->
-    setValueLatLng event.latLng.lat(), event.latLng.lng()
-    return
+#   google.maps.event.addListener marker, 'dragend', (event) ->
+#     setValueLatLng event.latLng.lat(), event.latLng.lng()
+#     return
   
-  google.maps.event.addListener map, 'click', (event) ->
-    marker.setPosition(event.latLng)
-    map.setCenter(event.latLng)
-    setValueLatLng event.latLng.lat(), event.latLng.lng()
-    return
+#   google.maps.event.addListener map, 'click', (event) ->
+#     marker.setPosition(event.latLng)
+#     map.setCenter(event.latLng)
+#     setValueLatLng event.latLng.lat(), event.latLng.lng()
+#     return
   
-  # Add circle overlay and bind to marker
-  circle = new (google.maps.Circle)(
-    map: map
-    clickable: false
-    radius: 10000
-    fillColor: '#55BF3B'
-    strokeColor: '#313131'
-    strokeOpacity: .4
-    strokeWeight: .8)
-  circle.bindTo 'center', marker, 'position'
-  setSliderListener circle
-  return
+#   # Add circle overlay and bind to marker
+#   circle = new (google.maps.Circle)(
+#     map: map
+#     clickable: false
+#     radius: 10000
+#     fillColor: '#55BF3B'
+#     strokeColor: '#313131'
+#     strokeOpacity: .4
+#     strokeWeight: .8)
+#   circle.bindTo 'center', marker, 'position'
+#   setSliderListener circle
+#   return
 
-resizeMap = ->
-  if typeof map == 'undefined'
-    return
-  setTimeout (->
-    resizingMap()
-    return
-  ), 400
-  return
+# resizeMap = ->
+#   if typeof map == 'undefined'
+#     return
+#   setTimeout (->
+#     resizingMap()
+#     return
+#   ), 400
+#   return
 
-resizingMap = ->
-  if typeof map == 'undefined'
-    return
-  center = map.getCenter()
-  google.maps.event.trigger map, 'resize'
-  map.setCenter center
-  return
+# resizingMap = ->
+#   if typeof map == 'undefined'
+#     return
+#   center = map.getCenter()
+#   google.maps.event.trigger map, 'resize'
+#   map.setCenter center
+#   return
 
-google.maps.event.addDomListener window, 'load', initialize
-google.maps.event.addDomListener window, 'change', initialize
-google.maps.event.addDomListener window, 'resize', resizingMap()
+# google.maps.event.addDomListener window, 'load', initialize
+# google.maps.event.addDomListener window, 'change', initialize
+# google.maps.event.addDomListener window, 'resize', resizingMap()
 
-#$ ->
+# #$ ->
 
-# SHOW MODAL
-$('#myModal').on 'show.bs.modal', ->
-  #Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
-  resizeMap()
-  return
+# # SHOW MODAL
+# $('#myModal').on 'show.bs.modal', ->
+#   #Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
+#   resizeMap()
+#   return

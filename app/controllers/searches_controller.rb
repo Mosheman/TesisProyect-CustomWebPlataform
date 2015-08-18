@@ -55,7 +55,7 @@ class SearchesController < ApplicationController
 		@client = get_client_credentials
 
 		# => Setting up Search
-		@search.search_type = params[:search_type]
+		#@search.search_type = params[:search_type]
 
 		# => Getting rate limits status
 		@max_attempts = 100
@@ -127,10 +127,10 @@ class SearchesController < ApplicationController
 		current_user.searches << Search.new(search_params)
 		@search = current_user.searches.last		
 
-	  	start_search
 
 		respond_to do |format|
 		  if @search
+	  		start_search
 		    format.js
 		    # format.html { redirect_to @search, notice: 'Search was successfully executed.' }
 		    # format.json { render :show, status: :created, location: @search }
@@ -169,7 +169,7 @@ class SearchesController < ApplicationController
 	end
 
 	def set_params_searchtype search_type
-		params = ActionController::Parameters.new(search_type: search_type)
+		params.merge(search_type: search_type)
 	end
 
 	private
