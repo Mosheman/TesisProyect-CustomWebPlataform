@@ -125,8 +125,7 @@ class SearchesController < ApplicationController
 	# POST /searches.json
 	def create
 		current_user.searches << Search.new(search_params)
-		@search = current_user.searches.last		
-
+		@search = current_user.searches.last
 
 		respond_to do |format|
 		  if @search

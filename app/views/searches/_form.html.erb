@@ -51,7 +51,8 @@
                     <div class="form-group">                    
                       <%= label_tag :radius, "Radio (kms)", class: "control-label col-xs-2" %>
                       <div class="col-xs-3 slider-box">
-                        <input id="radius-slider" class"form-control" />
+                        <!-- <input id="radius" class"form-control" /> -->
+                        <%= number_field_tag :radius, 10, class: "form-control", min: 1, max:100 %>
                       </div>
                     </div>
 
@@ -74,6 +75,7 @@
                         <%= label_tag :measurement_long, "Grados", class: "control-label" %>
                       </div>
                     </div>
+                    <%#= range_field_tag :radius_slider, 1, min: 1, max: 100 %>
 
 
                   </div>
@@ -122,6 +124,46 @@
 
 <script type="text/javascript">
 
+  var $btn_search, $check_data, $check_period, $key_words, $stop_data, $stop_period, $test_div;
+
+  $key_words = $('#keywords');
+
+  $check_period = $('#check_period');
+
+  $stop_period = $('#time_stop');
+
+  $check_data = $('#check_data');
+
+  $stop_data = $('#data_stop');
+
+  $btn_search = $('#search-btn');
+
+  $test_div = $('#test-div');
+
+  $stop_period.timepicker({
+    'timeFormat': 'H:i:s',
+    'step': 0.5
+  });
+
+  $check_period.click(function() {
+    $stop_period.attr('disabled', !this.checked);
+  });
+
+  $check_data.click(function() {
+    $stop_data.attr('disabled', !this.checked);
+  });
+
+  $('#search-form').one('submit', function() {
+    var spinner, target;
+    $(this).find('input[type="submit"]').prop('disabled', "disabled");
+    $(this).find('input[type="submit"]').prop('value', "Buscando...");
+    target = document.getElementById('search-spinner');
+    spinner = new Spinner().spin(target);
+  });
+
+
+
+
   $(function() {
     $("#latitude").prop('value', "-33.448889699999995");
     return $("#longitude").prop('value', "-70.6692655");
@@ -134,19 +176,19 @@
   };
 
   setSliderListener = function(circle) {
-    return $('#radius-slider').on('slide', function(slideEvt) {
+    return $('#radius').on('slide', function(slideEvt) {
       updateRadius(circle, slideEvt.value);
     });
   };
 
-  $('#radius-slider').slider({
+  $('#radius').slider({
     orientation: 'horizontal',
     max: 100,
     min: 1,
     value: 10
   });
 
-  $('#radius-slider').slider({
+  $('#radius').slider({
     formatter: function(value) {
       return 'Radio: ' + value + 'kms';
     }
