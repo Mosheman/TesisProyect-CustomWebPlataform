@@ -8,6 +8,8 @@ class Search
   field :radius, type: String
   # => May be tweets search, or user search
   field :search_type, type: String
+  # => May be "recent", "popular" or "mixed"
+  field :result_type, type: String
   # => If search_type is user
   field :depth_level, type: Integer
   # => Stop criteria

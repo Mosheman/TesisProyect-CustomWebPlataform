@@ -13,6 +13,27 @@ class SearchesController < ApplicationController
 		end
 		return @client
 	end
+	def following_query
+		tusers_retrived = @client.friends @search.tusers
+		tusers_retrived.each do |tuser|
+			@num_attempts += 1
+			@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
+		end
+	end
+	def followers_query
+		tusers_retrived = @client.followers @search.tusers
+		tusers_retrived.each do |tuser|
+			@num_attempts += 1
+			@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
+		end
+	end
+	def keywords_query
+		tweets_retrived = @client.search(keywords_space_separated, result_type: @search.result_type, geocode: geocode_str).take(99).collect
+		tweets_retrived.each do |tweet| 
+			@num_attempts += 1
+			@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
+		end		
+	end
 	def start_search
 		# => Params raw
 		keywords_raw = @search.keywords
@@ -33,17 +54,26 @@ class SearchesController < ApplicationController
 		# => Getting credentials
 		@client = get_client_credentials
 
+		# => Setting up Search
+		@search.search_type = params[:search_type]
+
 		# => Getting rate limits status
-		max_attempts = 100
-		num_attempts = 0
+		@max_attempts = 100
+		@num_attempts = 0
 		begin
-			retrived_tweets = @client.search(keywords_space_separated, result_type: "mixed", geocode: geocode_str).take(99).collect
-			retrived_tweets.each do |tweet| 
-				num_attempts += 1
-				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
+
+			if @search.search_type == "keywords"
+				keywords_query
+			elsif @search.search_type == "tusers"
+				if @search.result_type == "followers"
+					followers_query
+				elsif @search.result_type == "following"
+					following_query
+				end
 			end
+				
 		rescue Twitter::Error::TooManyRequests => error
-			if num_attempts <= max_attempts
+			if @num_attempts <= @max_attempts
 			# NOTE: Your process could go to sleep for up to 15 minutes but if you
 			# retry any sooner, it will almost certainly fail with the same exception.
 			    sleep error.rate_limit.reset_in
@@ -69,7 +99,8 @@ class SearchesController < ApplicationController
 		
 		stype = params[:search_type]
 		@searchtype_selected = SearchType.new stype[:label], stype[:active], stype[:path_name], stype[:name] 
-		
+		set_params_searchtype stype[:name]
+
 		respond_to do |format|
 		    format.js
 		end
@@ -83,6 +114,7 @@ class SearchesController < ApplicationController
 		@search_types = [SearchType.new("Palabras clave", true, "keywords_searches", "keywords"),
 							SearchType.new("Usuarios", false, "tusers_searches", "tusers")]
 		@searchtype_selected = SearchType.new("Palabras clave", true, "keywords_searches", "keywords")
+		set_params_searchtype "keywords"
 	end
 
 	# GET /searches/1/edit
@@ -93,10 +125,12 @@ class SearchesController < ApplicationController
 	# POST /searches.json
 	def create
 		current_user.searches << Search.new(search_params)
-		@search = current_user.searches.last
+		@search = current_user.searches.last		
+
+	  	start_search
+
 		respond_to do |format|
 		  if @search
-		  	start_search
 		    format.js
 		    # format.html { redirect_to @search, notice: 'Search was successfully executed.' }
 		    # format.json { render :show, status: :created, location: @search }
@@ -134,6 +168,10 @@ class SearchesController < ApplicationController
 		end
 	end
 
+	def set_params_searchtype search_type
+		params = ActionController::Parameters.new(search_type: search_type)
+	end
+
 	private
 	# Use callbacks to share common setup or constraints between actions.
 		def set_search
@@ -142,6 +180,6 @@ class SearchesController < ApplicationController
 
 		# Never trust parameters from the scary internet, only allow the white list through.
 		def search_params
-		  params.permit(:search_type, :keywords, :latitude, :longitude, :radius, :depth_level, :data_stop, :time_stop, :ilimited)
+		  params.permit(:search_type, :keywords, :latitude, :longitude, :radius, :depth_level, :data_stop, :time_stop, :ilimited, :result_type)
 		end
 end

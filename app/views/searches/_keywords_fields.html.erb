@@ -8,3 +8,10 @@
 	  <%= submit_tag "Buscar", class: "btn btn-warning search-submit", id: "search-btn" %>
 	</div>    
 </div>
+
+<div class="form-group">
+	<%= label_tag :result_type, "Tipo de resultados", class: "control-label col-xs-2" %>
+	<div class="col-xs-7">
+	  <%= select_tag :result_type, options_for_select([["Combinados", "mixed"], ["Mas Recientes", "recent"], ["Mas Populares", "popular"]], ["Combinados", "mixed"]), class: "form-control" %>
+	</div>
+</div>

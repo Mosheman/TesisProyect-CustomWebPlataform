@@ -31,6 +31,13 @@
                             <% end %>
                           </ul>
                         </div>
+                        <%#= select_tag( "my_tag_id", get_ids(@entity), class: "form-control",
+                              data: {
+                                remote: true,
+                                url: url_for( action: :set_searchtype, id: my_id)
+                              }
+                            )
+                        %>
                     </li>
                 </ol>
             </div>
@@ -43,9 +50,7 @@
                 	<div class="panel-heading">Parámetros de búsqueda</div>
                     <div class="panel-body">
 				        
-                        <!-- <div id="searchtype-form"> -->
-					       <%= render partial: "form" %>
-                        <!-- </div> -->
+				       <%= render partial: "form" %>
 
 					</div>
 				</div>
