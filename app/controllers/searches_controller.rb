@@ -13,22 +13,22 @@ class SearchesController < ApplicationController
 		end
 		return @client
 	end
-	def following_query
-		tusers_retrived = @client.friends @search.tusers
+	def get_following user_query
+		tusers_retrived = @client.friends user_query
 		tusers_retrived.each do |tuser|
 			@num_attempts += 1
 			@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 		end
 	end
-	def followers_query
-		tusers_retrived = @client.followers @search.tusers
+	def get_followers user_query
+		tusers_retrived = @client.followers user_query
 		tusers_retrived.each do |tuser|
 			@num_attempts += 1
 			@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 		end
 	end
-	def keywords_query
-		tweets_retrived = @client.search(keywords_space_separated, result_type: @search.result_type, geocode: geocode_str).take(99).collect
+	def get_keywords query, georeference
+		tweets_retrived = @client.search(query, result_type: @search.result_type, geocode: georeference).take(99).collect
 		tweets_retrived.each do |tweet| 
 			@num_attempts += 1
 			@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
@@ -41,34 +41,44 @@ class SearchesController < ApplicationController
 		longitude_raw = @search.longitude
 		radius_raw = @search.radius
 
-		# => Parser keywords
-		# Replaces all blanks+ and end of lines, for single-space. 
-		keywords_space_separated = keywords_raw.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, '')
-		keywords_array = keywords_space_separated.split(" ")
-		# String <- Coma separated keywords
-		keywords_str = keywords_array.join(",")
+		keywords_query = String.new
+		tuser_query = String.new
+		geocode = String.new
 
-		# => Parser geocode
-		geocode_str = latitude_raw.to_s + "," + longitude_raw.to_s + "," + radius_raw.to_s + "km"
+		if @search.search_type == "keywords"			
+			# => Parser keywords
+			# Replaces all blanks+ and end of lines, for single-space. 
+			keywords_query = keywords_raw.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, '')
+			# keywords_array = keywords_space_separated.split(" ")
+			# # String <- Coma separated keywords
+			# keywords_str = keywords_array.join(",")
+
+			# => Parser geocode
+			geocode = latitude_raw.to_s + "," + longitude_raw.to_s + "," + radius_raw.to_s + "km"
+		elsif @search.search_type == "tusers"
+			# => Parser tuser
+			# Replaces all blanks+ and end of lines, for single-space. 
+			keywords_space_separated = keywords_raw.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, '')
+			keywords_array = keywords_space_separated.split(" ")
+
+			tuser_query = keywords_array.first 
+		end
 
 		# => Getting credentials
 		@client = get_client_credentials
-
-		# => Setting up Search
-		#@search.search_type = params[:search_type]
-
+		
 		# => Getting rate limits status
 		@max_attempts = 100
 		@num_attempts = 0
 		begin
 
 			if @search.search_type == "keywords"
-				keywords_query
+				get_keywords keywords_query, geocode
 			elsif @search.search_type == "tusers"
 				if @search.result_type == "followers"
-					followers_query
+					get_followers tuser_query
 				elsif @search.result_type == "following"
-					following_query
+					get_following tuser_query
 				end
 			end
 				
@@ -98,8 +108,7 @@ class SearchesController < ApplicationController
 	def set_searchtype 
 		
 		stype = params[:search_type]
-		@searchtype_selected = SearchType.new stype[:label], stype[:active], stype[:path_name], stype[:name] 
-		set_params_searchtype stype[:name]
+		@searchtype_selected = SearchType.new stype[:label], true, stype[:path_name], stype[:name] 
 
 		respond_to do |format|
 		    format.js
@@ -111,10 +120,11 @@ class SearchesController < ApplicationController
 		n_calls = rate_limit_status	
 		@n_calls = 4
 
-		@search_types = [SearchType.new("Palabras clave", true, "keywords_searches", "keywords"),
-							SearchType.new("Usuarios", false, "tusers_searches", "tusers")]
-		@searchtype_selected = SearchType.new("Palabras clave", true, "keywords_searches", "keywords")
-		set_params_searchtype "keywords"
+		st_one = SearchType.new("Palabras clave", true, "keywords_searches", "keywords")
+		st_two = SearchType.new("Usuarios", false, "tusers_searches", "tusers")
+		@search_types = [st_one, st_two]
+		@searchtype_selected = st_one
+		set_params_searchtype st_one.get_attributes
 	end
 
 	# GET /searches/1/edit
@@ -168,7 +178,7 @@ class SearchesController < ApplicationController
 	end
 
 	def set_params_searchtype search_type
-		params.merge(search_type: search_type)
+		params = ActionController::Parameters.new(search_type: search_type)
 	end
 
 	private

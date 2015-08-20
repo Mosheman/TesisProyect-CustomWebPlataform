@@ -32,9 +32,10 @@
                     <thead>
                       <tr>
                         <th>Search type</th>
-                        <th>Keywords</th>
+                        <th>Search words</th>
                         <th>Data</th>
-                        <th>Georeference (lat, lon; rad)</th>
+                        <th>Created At</th>
+                        <!-- <th>Georeference (lat, lng; radio)</th> -->
                         <th colspan="3"></th>
                       </tr>
                     </thead>
@@ -48,12 +49,14 @@
                             <td>Indefinido</td>
                           <% end %>
                           <td><%= search.keywords %></td>
-                          <td><%= search.tweets.count %></td>
-                          <% if search.latitude or search.longitude or search.radius %>
-                            <td><%= search.latitude %>, <%= search.longitude %>; <%= search.radius %></td>
-                          <% else %>
+                          <td><%= is_tuser(search.search_type) ? search.twitter_users.count : search.tweets.count %></td>
+                          <td><%= search.created_at %></td>
+                          <!-- 
+                          <%# if search.latitude or search.longitude or search.radius %>
+                            <td><%#= search.latitude %>, <%#= search.longitude %>; <%#= search.radius %></td>
+                          <%# else %>
                             <td>Indefinido</td>
-                          <% end %>
+                          <%# end %> -->
                           <td><%= link_to 'Ver', search, class: "btn btn-info btn-sm" %></td>
                           <td><%= link_to 'Editar', edit_search_path(search), class: "btn btn-warning btn-sm" %></td>
                           <td><%= link_to 'Eliminar', search, method: :delete,# data: { confirm: 'Are you sure?' }, 
