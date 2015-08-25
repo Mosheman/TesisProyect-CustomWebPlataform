@@ -13,27 +13,27 @@ class SearchesController < ApplicationController
 		end
 		return @client
 	end
-	def get_following user_query
-		tusers_retrived = @client.friends user_query
-		tusers_retrived.each do |tuser|
-			@num_attempts += 1
-			@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
-		end
-	end
-	def get_followers user_query
-		tusers_retrived = @client.followers user_query
-		tusers_retrived.each do |tuser|
-			@num_attempts += 1
-			@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
-		end
-	end
-	def get_keywords query, georeference
-		tweets_retrived = @client.search(query, result_type: @search.result_type, geocode: georeference).take(99).collect
-		tweets_retrived.each do |tweet| 
-			@num_attempts += 1
-			@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
-		end		
-	end
+	# def get_following user_query
+	# 	tusers_retrived = @client.friends user_query
+	# 	tusers_retrived.each do |tuser|
+	# 		@num_attempts += 1
+	# 		@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
+	# 	end
+	# end
+	# def get_followers user_query
+	# 	tusers_retrived = @client.followers user_query
+	# 	tusers_retrived.each do |tuser|
+	# 		@num_attempts += 1
+	# 		@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
+	# 	end
+	# end
+	# def get_keywords query, georeference
+	# 	tweets_retrived = @client.search(query, result_type: @search.result_type, geocode: georeference).take(99).collect
+	# 	tweets_retrived.each do |tweet| 
+	# 		@num_attempts += 1
+	# 		@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
+	# 	end		
+	# end
 	def start_search
 		# => Params raw
 		keywords_raw = @search.keywords
@@ -45,6 +45,9 @@ class SearchesController < ApplicationController
 		tuser_query = String.new
 		geocode = String.new
 
+		# => Getting credentials
+		@client = get_client_credentials
+
 		if @search.search_type == "keywords"			
 			# => Parser keywords
 			# Replaces all blanks+ and end of lines, for single-space. 
@@ -55,6 +58,8 @@ class SearchesController < ApplicationController
 
 			# => Parser geocode
 			geocode = latitude_raw.to_s + "," + longitude_raw.to_s + "," + radius_raw.to_s + "km"
+			
+			search_keywords keywords_query, geocode
 		elsif @search.search_type == "tusers"
 			# => Parser tuser
 			# Replaces all blanks+ and end of lines, for single-space. 
@@ -62,26 +67,51 @@ class SearchesController < ApplicationController
 			keywords_array = keywords_space_separated.split(" ")
 
 			tuser_query = keywords_array.first 
-		end
+			
+			search_tusers tuser_query, @search.result_type
+		end		
+	end
 
-		# => Getting credentials
-		@client = get_client_credentials
-		
+	def search_keywords query, georeference
 		# => Getting rate limits status
-		@max_attempts = 100
+		@max_attempts = 180
 		@num_attempts = 0
 		begin
+			tweets_retrived = @client.search(query, result_type: @search.result_type, geocode: georeference).take(180).collect
+			tweets_retrived.each do |tweet| 
+				@num_attempts += 1
+				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
+			end	
+		rescue Twitter::Error::TooManyRequests => error
+			if @num_attempts <= @max_attempts
+			# NOTE: Your process could go to sleep for up to 15 minutes but if you
+			# retry any sooner, it will almost certainly fail with the same exception.
+			    sleep error.rate_limit.reset_in
+				retry
+			else
+				raise
+			end
+		end
+	end
 
-			if @search.search_type == "keywords"
-				get_keywords keywords_query, geocode
-			elsif @search.search_type == "tusers"
-				if @search.result_type == "followers"
-					get_followers tuser_query
-				elsif @search.result_type == "following"
-					get_following tuser_query
+	def search_tusers tuser_query, query_type
+		# => Getting rate limits status
+		@max_attempts = 180
+		@num_attempts = 0
+		begin
+			if query_type == "following"
+				tusers_retrived = @client.friends tuser_query
+				tusers_retrived.each do |tuser|
+					@num_attempts += 1
+					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
+				end
+			elsif query_type == "followers"
+				tusers_retrived = @client.followers tuser_query
+				tusers_retrived.each do |tuser|
+					@num_attempts += 1
+					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 				end
 			end
-				
 		rescue Twitter::Error::TooManyRequests => error
 			if @num_attempts <= @max_attempts
 			# NOTE: Your process could go to sleep for up to 15 minutes but if you
@@ -105,6 +135,14 @@ class SearchesController < ApplicationController
 	def show
 	end
 
+	def show_tweets
+		@search = Search.find params[:search_id]
+	end
+
+	def show_users
+		@search = Search.find params[:search_id]
+	end
+
 	def set_searchtype 
 		
 		stype = params[:search_type]
@@ -118,7 +156,7 @@ class SearchesController < ApplicationController
 	# GET /searches/new
 	def new
 		n_calls = rate_limit_status	
-		@n_calls = 4
+		@n_calls = 180
 
 		st_one = SearchType.new("Palabras clave", true, "keywords_searches", "keywords")
 		st_two = SearchType.new("Usuarios", false, "tusers_searches", "tusers")
@@ -167,8 +205,14 @@ class SearchesController < ApplicationController
 	# DELETE /searches/1
 	# DELETE /searches/1.json
 	def destroy
-		@search.tweets.each do |t|
-			t.destroy
+		if @search.search_type == "keywords"
+			@search.tweets.each do |t|
+				t.destroy
+			end
+		elsif @search.search_type == "tusers"
+			@search.twitter_users.each do |t|
+				t.destroy
+			end
 		end
 		@search.destroy
 		respond_to do |format|

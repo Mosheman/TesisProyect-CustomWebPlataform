@@ -15,6 +15,9 @@
                       <i class="fa fa-dashboard"></i>  <%= link_to "Inicio", dashboard_index_path %>
                   </li>
                   <li>
+                      <i class="glyphicon glyphicon-th-list"></i> <%= link_to "Listar Búsquedas", searches_path(@search) %>
+                  </li>
+                  <li>
                       <i class="glyphicon glyphicon-search"></i>  <%= link_to "Búsqueda", search_path(@search) %>
                   </li>
                   <li class="active">
@@ -30,36 +33,38 @@
           <div class="panel panel-primary">
             <div class="panel-heading">Detalle de Búsqueda</div>
             <div class="panel-body">
+              <div class="col-lg-7">              
+                <p>
+                  <strong>ID:</strong>
+                  <%= @tweet.twitters_tweet[:id_str] %>
+                </p>
 
-              <p>
-                <strong>ID:</strong>
-                <%= @tweet.twitters_tweet[:id_str] %>
-              </p>
+                <p>
+                  <strong>Text:</strong>
+                  <%= @tweet.twitters_tweet[:text] %>
+                </p>
 
-              <p>
-                <strong>Text:</strong>
-                <%= @tweet.twitters_tweet[:text] %>
-              </p>
+                <p>
+                  <strong>Georeference (lat, lon; rad):</strong>
+                  <% if @tweet.twitters_tweet[:geo] %>
+                    <%= @tweet.twitters_tweet[:geo][:coordinates][0] %>, <%= @tweet.twitters_tweet[:geo][:coordinates][1] %>
+                  <% else %>
+                    Indefinido
+                  <% end %>
+                </p>
 
-              <p>
-                <strong>Georeference (lat, lon; rad):</strong>
-                <% if @tweet.twitters_tweet[:geo] %>
-                  <%= @tweet.twitters_tweet[:geo][:coordinates][0] %>, <%= @tweet.twitters_tweet[:geo][:coordinates][1] %>
-                <% else %>
-                  Indefinido
-                <% end %>
-              </p>
-
-              <p>
-                <strong>Created At:</strong>
-                <%= @tweet.twitters_tweet[:created_at] %>
-              </p>
-
-
-              <%= link_to 'Editar', edit_search_tweet_path(@search, @tweet), class: "btn btn-warning btn-sm" %>
+                <p>
+                  <strong>Created At:</strong>
+                  <%= @tweet.twitters_tweet[:created_at] %>
+                </p>
 
 
-            </div>
+                <%= link_to 'Editar', edit_search_tweet_path(@search, @tweet), class: "btn btn-warning btn-sm" %>
+              </div>  
+              <div class="col-lg-5">
+                <div id="show-tweet-map"></div>
+              </div>
+            </div> 
             <!-- /.panel-body -->
           </div>
         </div>
@@ -68,3 +73,75 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+
+  var initialize, map, marker, myCenter, resizeMap, resizingMap, setValueLatLng;
+  var latTweet = parseFloat("<%= @tweet.twitters_tweet[:geo][:coordinates][0] %>");
+  var lngTweet = parseFloat("<%= @tweet.twitters_tweet[:geo][:coordinates][1] %>");  
+  var latCenter = parseFloat("<%= escape_javascript @search.latitude %>");
+  var lngCenter = parseFloat("<%= escape_javascript @search.longitude %>");
+  var radiusCenter = parseInt("<%= escape_javascript @search.radius %>");
+  map = void 0;
+
+  pointTweet = new google.maps.LatLng(latTweet, lngTweet);
+  myCenter = new google.maps.LatLng(latCenter, lngCenter);
+
+  markerTweet = new google.maps.Marker({
+    position: pointTweet,
+    draggable: false
+  });
+
+  marker = new google.maps.Marker({
+    position: myCenter,
+    draggable: false
+  });
+
+  initialize = function() {
+    var circle, mapProp;
+    mapProp = {
+      center: myCenter,
+      zoom: 10,
+      draggable: true,
+      disableDefaultUI: true,
+      disableDoubleClickZoom: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('show-tweet-map'), mapProp);
+    //marker.setMap(map);
+    markerTweet.setMap(map);
+    circle = new google.maps.Circle({
+      map: map,
+      clickable: false,
+      radius: radiusCenter*1000,
+      fillColor: '#55BF3B',
+      strokeColor: '#313131',
+      strokeOpacity: .4,
+      strokeWeight: .8
+    });
+    circle.bindTo('center', marker, 'position');
+  };
+
+  resizeMap = function() {
+    if (typeof map === 'undefined') {
+      return;
+    }
+    setTimeout((function() {
+      resizingMap();
+    }), 400);
+  };
+
+  resizingMap = function() {
+    var center;
+    if (typeof map === 'undefined') {
+      return;
+    }
+    center = map.getCenter();
+    google.maps.event.trigger(map, 'resize');
+    map.setCenter(center);
+  };
+
+  google.maps.event.addDomListenerOnce(window, 'mousemove', initialize);
+  google.maps.event.addDomListener(window, 'resize', resizingMap());
+
+</script>

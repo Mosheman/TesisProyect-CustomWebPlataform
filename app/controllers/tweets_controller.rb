@@ -11,6 +11,7 @@ class TweetsController < ApplicationController
   # GET /tweets/1.json
   def show
     @search = Search.find(params[:search_id])
+    @tweet = Tweet.find params[:id]
   end
 
   # GET /tweets/new

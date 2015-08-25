@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
-  resources :twitter_users
   resources :searches do
+    get "show_tweets", to: "searches#show_tweets"
+    get "show_users", to: "searches#show_users"
+    resources :twitter_users
     resources :tweets
-    collection do
-      get :set_searchtype
-    end
+      collection do
+        get :set_searchtype
+      end
   end
   #post 'searches/start_search'
   #get 'searches/index'
