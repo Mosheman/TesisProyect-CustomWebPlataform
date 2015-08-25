@@ -1,89 +1,96 @@
-<p id="notice"><%= notice %></p>
+<div id="page-wrapper">
+    <div class="container-fluid margin-layout">
 
-<p>
-  <strong>Connections:</strong>
-  <%= @twitter_user.connections %>
-</p>
+      <!-- Page Heading -->
+      <div class="row">
+          <div class="col-lg-12">
+              <h1 class="page-header">
+                  Usuario de Twitter 
+                  <%# @search.keywords.split(" ").each do |keyword| %>
+                    <!-- <small><span class="badge"><%#= keyword %></span></small> -->
+                  <%# end %>                    
+              </h1>
+              <ol class="breadcrumb">
+                  <li>
+                      <i class="fa fa-dashboard"></i>  <%= link_to "Inicio", dashboard_index_path %>
+                  </li>
+                  <li>
+                      <i class="glyphicon glyphicon-th-list"></i> <%= link_to "Listar Búsquedas", searches_path %>
+                  </li>
+                  <li>
+                      <i class="glyphicon glyphicon-search"></i>  <%= link_to "Búsqueda", search_show_users_path(@search) %>
+                  </li>
+                  <li class="active">
+                      <i class="glyphicon glyphicon-user"></i> Usuario de Twitter
+                  </li>
+              </ol>
+          </div>
+      </div>
+      <!-- /.row -->
 
-<p>
-  <strong>Description:</strong>
-  <%= @twitter_user.description %>
-</p>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Detalle del Usuario de Twitter</div>
+            <div class="panel-body">
+              <div class="col-lg-7">              
+                <p>
+                  <strong>ID:</strong>
+                  <%= @tuser.twitters_user[:id_str] %>
+                </p>
 
-<p>
-  <strong>Favourites count:</strong>
-  <%= @twitter_user.favourites_count %>
-</p>
+                <p>
+                  <strong>Name:</strong>
+                  <%= @tuser.twitters_user[:name] %>
+                </p>
 
-<p>
-  <strong>Followers count:</strong>
-  <%= @twitter_user.followers_count %>
-</p>
+                <p>
+                  <strong>Screen Name:</strong>
+                  <%= @tuser.twitters_user[:screen_name] %>
+                </p>
 
-<p>
-  <strong>Friends count:</strong>
-  <%= @twitter_user.friends_count %>
-</p>
+                <p>
+                  <strong>Description:</strong>
+                  <%= @tuser.twitters_user[:description] %>
+                </p>
 
-<p>
-  <strong>Lang:</strong>
-  <%= @twitter_user.lang %>
-</p>
+                <p>
+                  <strong>Time Zone:</strong>
+                  <%= @tuser.twitters_user[:time_zone] %>
+                </p>
 
-<p>
-  <strong>Listed count:</strong>
-  <%= @twitter_user.listed_count %>
-</p>
+                <p>
+                  <strong>Followers:</strong>
+                  <%= @tuser.twitters_user[:followers_count] %>
+                </p>
 
-<p>
-  <strong>Location:</strong>
-  <%= @twitter_user.location %>
-</p>
+                <p>
+                  <strong>Following:</strong>
+                  <%= @tuser.twitters_user[:friends_count] %>
+                </p>
+                
+                <p>
+                  <strong>Statuses:</strong>
+                  <%= @tuser.twitters_user[:statuses_count] %>
+                </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @twitter_user.name %>
-</p>
+                <p>
+                  <strong>Created At:</strong>
+                  <%= @tuser.twitters_user[:created_at] %>
+                </p>
 
-<p>
-  <strong>Profile background color:</strong>
-  <%= @twitter_user.profile_background_color %>
-</p>
 
-<p>
-  <strong>Profile link color:</strong>
-  <%= @twitter_user.profile_link_color %>
-</p>
+                <%= link_to 'Editar', edit_search_tweet_path(@search, @tuser), class: "btn btn-warning btn-sm" %>
+              </div>  
+              <div class="col-lg-5">
+                <div id="show-tweet-map"></div>
+              </div>
+            </div> 
+            <!-- /.panel-body -->
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
 
-<p>
-  <strong>Profile sidebar border color:</strong>
-  <%= @twitter_user.profile_sidebar_border_color %>
-</p>
-
-<p>
-  <strong>Profile sidebar fill color:</strong>
-  <%= @twitter_user.profile_sidebar_fill_color %>
-</p>
-
-<p>
-  <strong>Profile text color:</strong>
-  <%= @twitter_user.profile_text_color %>
-</p>
-
-<p>
-  <strong>Statuses count:</strong>
-  <%= @twitter_user.statuses_count %>
-</p>
-
-<p>
-  <strong>Time zone:</strong>
-  <%= @twitter_user.time_zone %>
-</p>
-
-<p>
-  <strong>Utc offset:</strong>
-  <%= @twitter_user.utc_offset %>
-</p>
-
-<%= link_to 'Edit', edit_twitter_user_path(@twitter_user) %> |
-<%= link_to 'Back', twitter_users_path %>
+    </div>
+</div>

@@ -10,6 +10,8 @@ class TwitterUsersController < ApplicationController
   # GET /twitter_users/1
   # GET /twitter_users/1.json
   def show
+    @search = Search.find params[:search_id]
+    @tuser = TwitterUser.find params[:id]
   end
 
   # GET /twitter_users/new
