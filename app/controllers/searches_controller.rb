@@ -137,6 +137,12 @@ class SearchesController < ApplicationController
 
 	def show_tweets
 		@search = Search.find params[:search_id]
+		@coords = Array.new
+		@search.tweets.each do |app_tweet|
+			@coords << {"screen_name" => app_tweet.twitters_tweet[:user][:screen_name],
+						"lat" => app_tweet.twitters_tweet[:geo][:coordinates][0], 
+						"lng" => app_tweet.twitters_tweet[:geo][:coordinates][1]} 
+		end
 	end
 
 	def show_users

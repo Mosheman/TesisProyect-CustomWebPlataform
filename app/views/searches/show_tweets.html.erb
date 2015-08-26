@@ -67,7 +67,7 @@
 				<table class="table">
 					<thead>
 					  <tr>
-					    <th>ID</th>
+					    <th>Author</th>
 					    <th>Text</th>
 					    <th>Georeference (lat, lon)</th>
 					    <th>Created At</th>
@@ -78,7 +78,7 @@
 					<tbody>
 					  <% @search.tweets.each do |aps_tweet| %>
 					    <tr>
-					      <td><%= aps_tweet.twitters_tweet[:id_str] %></td>
+					      <td><%= aps_tweet.twitters_tweet[:user][:screen_name] %></td>
 					      <td><%= aps_tweet.twitters_tweet[:text] %></td>
 					      <% if aps_tweet.twitters_tweet[:geo] %>
 					        <td><%= aps_tweet.twitters_tweet[:geo][:coordinates][0] %>, <%= aps_tweet.twitters_tweet[:geo][:coordinates][1] %></td>
@@ -104,12 +104,26 @@
 <script type="text/javascript">
 
   var initialize, map, marker, myCenter, resizeMap, resizingMap, setValueLatLng;
+  var coordsArray = <%= raw @coords.to_json %>
+  var geoPointArray = [];
+  var markersArray = [];
   var latCenter = parseFloat("<%= escape_javascript @search.latitude %>");
   var lngCenter = parseFloat("<%= escape_javascript @search.longitude %>");
   var radiusCenter = parseInt("<%= escape_javascript @search.radius %>");
   map = void 0;
 
   myCenter = new google.maps.LatLng(latCenter, lngCenter);
+
+  var index;
+
+  for (index = 0; index < coordsArray.length; ++index) {
+  	geoPointArray[index] = new google.maps.LatLng(coordsArray[index].lat, coordsArray[index].lng); 
+  	markersArray[index] = new google.maps.Marker({
+	    position: geoPointArray[index],
+	    draggable: false,
+	    title: "Autor: "+coordsArray[index].screen_name
+    });
+  }
 
   marker = new google.maps.Marker({
     position: myCenter,
@@ -127,17 +141,20 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById('show-search-map'), mapProp);
-    marker.setMap(map);
+    // marker.setMap(map);
+    for (index = 0; index < markersArray.length; ++index) {
+		markersArray[index].setMap(map);
+	}
     circle = new google.maps.Circle({
       map: map,
       clickable: false,
       radius: radiusCenter*1000,
+      center: myCenter,
       fillColor: '#55BF3B',
       strokeColor: '#313131',
       strokeOpacity: .4,
       strokeWeight: .8
     });
-    circle.bindTo('center', marker, 'position');
   };
 
   resizeMap = function() {
