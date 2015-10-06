@@ -37,4 +37,18 @@ class User
   embeds_one :twitter_credential
 
   has_many :searches
+
+  def data_count
+    @count = {tweets: 0, users: 0, geo: 0}
+    self.searches.each do |search|
+      @count[:tweets] += search.tweets ? search.tweets.count : 0
+      @count[:users] += search.twitter_users ? search.twitter_users.count : 0
+      if search.tweets
+        search.tweets.each do |t|
+          @count[:geo] += t.twitters_tweet[:geo] ? 1 : 0
+        end
+      end
+    end
+    @count
+  end
 end

@@ -31,32 +31,37 @@
 				<div class="panel-heading">Detalle de Búsqueda</div>
 				<div class="panel-body">
 					<div class="col-lg-7">
+		                
+		                <div class="panel panel-default">
+							<div class="panel-body">
 
-						<p>
-						  <strong>Search type:</strong>
-	                      <%= @search.search_type ? @search.search_type : "Indefinido" %>
-						</p>
+								<p>
+								  <strong>Search type:</strong>
+			                      <%= @search.search_type ? @search.search_type : "Indefinido" %>
+								</p>
 
-						<p>
-						  <strong>Keywords:</strong>
-						  <%= @search.keywords %>
-						</p>
+								<p>
+								  <strong>Keywords:</strong>
+								  <%= @search.keywords %>
+								</p>
 
-						<p>
-						  <strong>Georeference (lat, lon; rad):</strong>
-						  <% if @search.latitude or @search.longitude or @search.radius %>
-	                        <%= @search.latitude %>, <%= @search.longitude %>; <%= @search.radius %>km
-	                      <% else %>
-	                        Indefinido
-	                      <% end %>
-						</p>
+								<p>
+								  <strong>Georeference (lat, lng; rad):</strong>
+								  <% if @search.latitude or @search.longitude or @search.radius %>
+			                        <%= @search.latitude %>, <%= @search.longitude %>; <%= @search.radius %>km
+			                      <% else %>
+			                        Indefinido
+			                      <% end %>
+								</p>
 
-						<p>
-						  <strong>Depth level:</strong>
-						  <%= @search.depth_level ? @search.depth_level : "Indefinido" %>
-						</p>
+								<p>
+								  <strong>Depth level:</strong>
+								  <%= @search.depth_level ? @search.depth_level : "Indefinido" %>
+								</p>
+							</div>
+						</div>
 
-						<%= link_to 'Editar', edit_search_path(@search), class: "btn btn-warning btn-sm" %>
+						<%#= link_to 'Editar', edit_search_path(@search), class: "btn btn-warning btn-sm" %>
 					</div>
 					<div class="col-lg-5">
 						<div id="show-search-map"></div>
@@ -69,9 +74,9 @@
 					  <tr>
 					    <th>Author</th>
 					    <th>Text</th>
-					    <th>Georeference (lat, lon)</th>
+					    <th>Georeference (lat, lng)</th>
 					    <th>Created At</th>
-					    <th colspan="3"></th>
+					    <th colspan="2"></th>
 					  </tr>
 					</thead>
 
@@ -87,7 +92,7 @@
 					      <% end %>
 					      <td><%= aps_tweet.twitters_tweet[:created_at] %></td>
 					      <td><%= link_to 'Ver', search_tweet_path(@search, aps_tweet), class: "btn btn-info btn-sm" %></td>
-					      <td><%= link_to 'Editar', edit_search_tweet_path(@search, aps_tweet), class: "btn btn-warning btn-sm" %></td>
+					      <!-- <td><%#= link_to 'Editar', edit_search_tweet_path(@search, aps_tweet), class: "btn btn-warning btn-sm" %></td> -->
 					      <td><%= link_to 'Eliminar', search_tweet_path(@search, aps_tweet), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %></td>
 					    </tr>
 					  <% end %>

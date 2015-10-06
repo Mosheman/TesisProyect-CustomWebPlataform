@@ -11,114 +11,70 @@
     <%= render partial: @searchtype_selected.name+"_fields" %>
   </div>
 
-  <div class="panel panel-info">
-    <div class="panel-heading">Georeferencias</div>
-    <div class="panel-body">
 
-        <div class="form-group">
-          <%= label_tag :zone, "Zona", class: "control-label col-xs-2" %>
-          <div class="col-xs-6">
-            <%= text_field_tag :zone, nil, class: "form-control", placeholder: "Ciudad, Región o País" %>
-          </div>
-          <div class="col-xs-3">
-            <!-- Button trigger modal -->
-            <button id="btn-modal-area" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
-              <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Área de búsqueda
-            </button>
-          </div>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Georeferencia</h4>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <div id="map"></div>
-                  </div>
-
-                  <div class="col-xs-6">
-
-                    <div class="form-group">
-                      <%= label_tag :modal_zone, "Zona", class: "control-label col-xs-2" %>
-                      <div class="col-xs-6">
-                        <%= text_field_tag :modal_zone, nil, class: "form-control", placeholder: "Ciudad, Región o País" %>
-                      </div>
-                    </div>
-
-                    <div class="form-group">                    
-                      <%= label_tag :radius, "Radio (kms)", class: "control-label col-xs-2" %>
-                      <div class="col-xs-3 slider-box">
-                        <!-- <input id="radius" class"form-control" /> -->
-                        <%= number_field_tag :radius, 10, class: "form-control", min: 1, max:100 %>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <%= label_tag :latitude, "Latitud", class: "control-label col-xs-2" %>
-                      <div class="col-xs-4">
-                        <%= text_field_tag :latitude, nil, class: "form-control" %>
-                      </div>
-                      <div class="col-xs-3">
-                        <%= label_tag :measurement_lat, "Grados", class: "control-label" %>
-                      </div> 
-                    </div>
-              
-                    <div class="form-group">
-                      <%= label_tag :longitude, "Longitud", class: "control-label col-xs-2" %>
-                      <div class="col-xs-4">
-                        <%= text_field_tag :longitude, nil, class: "form-control" %>
-                      </div>
-                      <div class="col-xs-3">
-                        <%= label_tag :measurement_long, "Grados", class: "control-label" %>
-                      </div>
-                    </div>
-                    <%#= range_field_tag :radius_slider, 1, min: 1, max: 100 %>
-
-
-                  </div>
-
-                </div> <!-- .row -->
-              
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar cambios</button>
-              </div>
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-info">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <h4 class="panel-title">
+            Criterios de parada
+          </h4>
+        </a>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+          <div class="form-group">
+            <%= label_tag :time_stop, "Tiempo", class: "control-label col-xs-2" %>
+            <div class="col-xs-1">
+              <%= check_box_tag :check_period, 'yes', false, class: "checkbox-reduce form-control" %>
+            </div>
+            <div class="col-xs-3">
+              <%= text_field_tag :time_stop, nil, options: {:step => 1}, class: "hasDatepicker form-control", placeholder: "HH:mm:ss", disabled: "disabled" %>
             </div>
           </div>
-        </div>
-
-    </div>
-  </div>
-
-  <div class="panel panel-info">
-    <div class="panel-heading">Criterios de parada</div>
-    <div class="panel-body">
-      <div class="form-group">
-        <%= label_tag :time_stop, "Tiempo", class: "control-label col-xs-2" %>
-        <div class="col-xs-1">
-          <%= check_box_tag :check_period, 'yes', false, class: "checkbox-reduce form-control" %>
-        </div>
-        <div class="col-xs-3">
-          <%= text_field_tag :time_stop, nil, options: {:step => 1}, class: "hasDatepicker form-control", placeholder: "HH:mm:ss", disabled: "disabled" %>
+          <div class="form-group">
+            <%= label_tag :data_stop, "Datos", class: "control-label col-xs-2" %>
+            <div class="col-xs-1">
+              <%= check_box_tag :check_data, 'yes', false, class: "checkbox-reduce form-control" %>
+            </div>
+            <div class="col-xs-3">
+              <%= number_field_tag :data_stop, nil, min: 0, class: "form-control", placeholder: "Cantidad de datos", disabled: "disabled" %>
+            </div>
+          </div>
+          <!-- End fields -->
         </div>
       </div>
-      <div class="form-group">
-        <%= label_tag :data_stop, "Datos", class: "control-label col-xs-2" %>
-        <div class="col-xs-1">
-          <%= check_box_tag :check_data, 'yes', false, class: "checkbox-reduce form-control" %>
-        </div>
-        <div class="col-xs-3">
-          <%= number_field_tag :data_stop, nil, min: 0, class: "form-control", placeholder: "Cantidad de datos", disabled: "disabled" %>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading" role="tab" id="headingTwo">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <h4 class="panel-title">
+            Configuraciones avanzadadas
+          </h4>
+        </a>
+      </div>
+      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+        <div class="panel-body">
+          
+
+          
         </div>
       </div>
-      
     </div>
+    <!-- <div class="panel panel-info">
+      <div class="panel-heading" role="tab" id="headingThree">
+        <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Collapsible Group Item #3
+          </a>
+        </h4>
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+        <div class="panel-body">
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        </div>
+      </div>
+    </div> -->
   </div>
 
   

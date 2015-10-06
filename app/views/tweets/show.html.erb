@@ -34,32 +34,77 @@
             <div class="panel-heading">Detalle del Tweet</div>
             <div class="panel-body">
               <div class="col-lg-7">              
-                <p>
-                  <strong>ID:</strong>
-                  <%= @tweet.twitters_tweet[:id_str] %>
-                </p>
 
-                <p>
-                  <strong>Text:</strong>
-                  <%= @tweet.twitters_tweet[:text] %>
-                </p>
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <p>
+                      <strong>ID Twitter:</strong>
+                      <%= @tweet.twitters_tweet[:id_str] %>
+                    </p>
 
-                <p>
-                  <strong>Georeference (lat, lon; rad):</strong>
-                  <% if @tweet.twitters_tweet[:geo] %>
-                    <%= @tweet.twitters_tweet[:geo][:coordinates][0] %>, <%= @tweet.twitters_tweet[:geo][:coordinates][1] %>
-                  <% else %>
-                    Indefinido
-                  <% end %>
-                </p>
+                    <p>
+                      <strong>Text:</strong>
+                      <%= @tweet.twitters_tweet[:text] %>
+                    </p>
 
-                <p>
-                  <strong>Created At:</strong>
-                  <%= @tweet.twitters_tweet[:created_at] %>
-                </p>
+                    <p>
+                      <strong>Georeference (lat, lng; rad):</strong>
+                      <% if @tweet.twitters_tweet[:geo] %>
+                        <%= @tweet.twitters_tweet[:geo][:coordinates][0] %>, <%= @tweet.twitters_tweet[:geo][:coordinates][1] %>
+                      <% else %>
+                        Indefinido
+                      <% end %>
+                    </p>
 
+                    <p>
+                      <strong>Created At:</strong>
+                      <%= @tweet.twitters_tweet[:created_at] %>
+                    </p>
 
-                <%= link_to 'Editar', edit_search_tweet_path(@search, @tweet), class: "btn btn-warning btn-sm" %>
+                  </div>
+                </div>
+                <div class="panel panel-info">
+                  <div class="panel-heading">Detalle del Autor</div>
+                  <div class="panel-body">
+
+                    <p>
+                      <strong>Name:</strong>
+                      <%= @tweet.twitters_tweet[:user][:name] %>
+                    </p>
+
+                    <p>
+                      <strong>Screen Name:</strong>
+                      <%= @tweet.twitters_tweet[:user][:screen_name] %>
+                    </p>
+
+                    <p>
+                      <strong>Location:</strong>
+                      <%= @tweet.twitters_tweet[:user][:location] %>
+                    </p>
+
+                    <p>
+                      <strong>Description:</strong>
+                      <%= @tweet.twitters_tweet[:user][:description] %>
+                    </p>
+
+                    <p>
+                      <strong>Followers:</strong>
+                      <%= @tweet.twitters_tweet[:user][:followers_count] %>
+                    </p>
+
+                    <p>
+                      <strong>Following:</strong>
+                      <%= @tweet.twitters_tweet[:user][:friends_count] %>
+                    </p>
+
+                    <p>
+                      <strong>Created At:</strong>
+                      <%= @tweet.twitters_tweet[:user][:created_at] %>
+                    </p>
+                  </div>
+                </div>
+
+                <%#= link_to 'Editar', edit_search_tweet_path(@search, @tweet), class: "btn btn-warning btn-sm" %>
               </div>  
               <div class="col-lg-5">
                 <div id="show-tweet-map"></div>
@@ -77,8 +122,8 @@
 <script type="text/javascript">
 
   var initialize, map, marker, myCenter, resizeMap, resizingMap, setValueLatLng;
-  var latTweet = parseFloat("<%= @tweet.twitters_tweet[:geo][:coordinates][0] %>");
-  var lngTweet = parseFloat("<%= @tweet.twitters_tweet[:geo][:coordinates][1] %>");  
+  var latTweet = parseFloat("<%= @tweet.twitters_tweet[:geo] ? @tweet.twitters_tweet[:geo][:coordinates][0] : nil %>");
+  var lngTweet = parseFloat("<%= @tweet.twitters_tweet[:geo] ? @tweet.twitters_tweet[:geo][:coordinates][1] : nil %>");  
   var latCenter = parseFloat("<%= escape_javascript @search.latitude %>");
   var lngCenter = parseFloat("<%= escape_javascript @search.longitude %>");
   var radiusCenter = parseInt("<%= escape_javascript @search.radius %>");

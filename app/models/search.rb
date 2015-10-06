@@ -2,6 +2,7 @@ class Search
   include Mongoid::Document
   include Mongoid::Timestamps
   field :keywords, type: String
+  field :lang, type: String
   # => Georeference
   field :latitude, type: String
   field :longitude, type: String

@@ -37,6 +37,7 @@ class SearchesController < ApplicationController
 	def start_search
 		# => Params raw
 		keywords_raw = @search.keywords
+		lang_raw = (@search.lang ? @search.lang : :nil)
 		latitude_raw = @search.latitude
 		longitude_raw = @search.longitude
 		radius_raw = @search.radius
@@ -59,7 +60,10 @@ class SearchesController < ApplicationController
 			# => Parser geocode
 			geocode = latitude_raw.to_s + "," + longitude_raw.to_s + "," + radius_raw.to_s + "km"
 			
-			search_keywords keywords_query, geocode
+			# search_keywords keywords_query, geocode
+			# => Call to Async Worker for Tweet Search
+			TweetSearchWorker.perform_async current_user.id, @search.id, keywords_query, geocode, lang_raw 
+			
 		elsif @search.search_type == "tusers"
 			# => Parser tuser
 			# Replaces all blanks+ and end of lines, for single-space. 
@@ -127,7 +131,7 @@ class SearchesController < ApplicationController
 	# GET /searches
 	# GET /searches.json
 	def index
-		@searches = Search.all
+		@searches = current_user.searches
 	end
 
 	# GET /searches/1
@@ -136,17 +140,19 @@ class SearchesController < ApplicationController
 	end
 
 	def show_tweets
-		@search = Search.find params[:search_id]
+		@search = current_user.searches.find params[:search_id]
 		@coords = Array.new
 		@search.tweets.each do |app_tweet|
-			@coords << {"screen_name" => app_tweet.twitters_tweet[:user][:screen_name],
-						"lat" => app_tweet.twitters_tweet[:geo][:coordinates][0], 
-						"lng" => app_tweet.twitters_tweet[:geo][:coordinates][1]} 
+			if app_tweet.twitters_tweet[:geo]
+				@coords << {"screen_name" => app_tweet.twitters_tweet[:user][:screen_name],
+							"lat" => app_tweet.twitters_tweet[:geo][:coordinates][0], 
+							"lng" => app_tweet.twitters_tweet[:geo][:coordinates][1]}
+			end
 		end
 	end
 
 	def show_users
-		@search = Search.find params[:search_id]
+		@search = current_user.searches.find params[:search_id]
 	end
 
 	def set_searchtype 
@@ -239,6 +245,6 @@ class SearchesController < ApplicationController
 
 		# Never trust parameters from the scary internet, only allow the white list through.
 		def search_params
-		  params.permit(:search_type, :keywords, :latitude, :longitude, :radius, :depth_level, :data_stop, :time_stop, :ilimited, :result_type)
+		  params.permit(:search_type, :keywords, :latitude, :longitude, :radius, :depth_level, :data_stop, :time_stop, :ilimited, :result_type, :lang)
 		end
 end
