@@ -1,10 +1,10 @@
 <% if @search.search_type == "keywords" %>
 	<% @search.tweets.each do |db_tweet| %>
-		$('#log-div').prepend("<li class='list-group-item'>"+"<%= db_tweet.twitters_tweet[:text].to_s %>"+"</li>");
+		$('#log-div').prepend("<li class='list-group-item'><%= db_tweet.twitters_tweet[:text].to_s %></li>");
 	<% end %>
 <% elsif @search.search_type == "tusers" %>
 	<% @search.twitter_users.each do |db_tuser| %>
-		$('#log-div').prepend("<li class='list-group-item'>"+"<%= db_tuser.twitters_user[:name].to_s %>"+"</li>");
+		$('#log-div').prepend("<li class='list-group-item'><%= db_tuser.twitters_user[:name].to_s %></li>");
 	<% end %>
 <% end %>
 

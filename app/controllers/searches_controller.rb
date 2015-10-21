@@ -60,10 +60,12 @@ class SearchesController < ApplicationController
 			# => Parser geocode
 			geocode = latitude_raw.to_s + "," + longitude_raw.to_s + "," + radius_raw.to_s + "km"
 			
-			# search_keywords keywords_query, geocode
-			# => Call to Async Worker for Tweet Search
-			TweetSearchWorker.perform_async current_user.id, @search.id, keywords_query, geocode, lang_raw 
-			
+			if current_user.search_queue.blank?
+				search_keywords keywords_query, geocode
+			else
+				# => Call to Async Worker for Tweet Search
+				TweetSearchWorker.perform_async current_user.id, @search.id, keywords_query, geocode, lang_raw 
+			end
 		elsif @search.search_type == "tusers"
 			# => Parser tuser
 			# Replaces all blanks+ and end of lines, for single-space. 

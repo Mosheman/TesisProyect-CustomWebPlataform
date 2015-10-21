@@ -45,6 +45,8 @@ gem 'underscore-rails'
 gem 'bootstrap-slider-rails'
 # Async Background Worker
 gem 'sidekiq'
+# Scheduler
+gem 'rufus-scheduler'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

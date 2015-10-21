@@ -24,4 +24,6 @@ class Search
   belongs_to :user
   has_many :tweets
   has_many :twitter_users
+
+  embeds_many :jobs
 end
