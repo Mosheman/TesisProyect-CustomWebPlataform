@@ -4,78 +4,30 @@ class SearchesController < ApplicationController
 	def rate_limit_status
 		
 	end
-  	def get_client_credentials
-		@client = Twitter::REST::Client.new do |config|
-			config.consumer_key        = current_user.twitter_credential.consumer_key
-			config.consumer_secret     = current_user.twitter_credential.consumer_secret
-			config.access_token        = current_user.twitter_credential.access_token
-			config.access_token_secret = current_user.twitter_credential.access_token_secret
+
+	def start_search		
+		if @search.status == :processing
+			insta_search
+		elsif @search.status == :waiting
+			search_enqueued
 		end
-		return @client
 	end
-	# def get_following user_query
-	# 	tusers_retrived = @client.friends user_query
-	# 	tusers_retrived.each do |tuser|
-	# 		@num_attempts += 1
-	# 		@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
-	# 	end
-	# end
-	# def get_followers user_query
-	# 	tusers_retrived = @client.followers user_query
-	# 	tusers_retrived.each do |tuser|
-	# 		@num_attempts += 1
-	# 		@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
-	# 	end
-	# end
-	# def get_keywords query, georeference
-	# 	tweets_retrived = @client.search(query, result_type: @search.result_type, geocode: georeference).take(99).collect
-	# 	tweets_retrived.each do |tweet| 
-	# 		@num_attempts += 1
-	# 		@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
-	# 	end		
-	# end
-	def start_search
-		# => Params raw
-		keywords_raw = @search.keywords
-		lang_raw = (@search.lang ? @search.lang : :nil)
-		latitude_raw = @search.latitude
-		longitude_raw = @search.longitude
-		radius_raw = @search.radius
 
-		keywords_query = String.new
-		tuser_query = String.new
-		geocode = String.new
+	def search_enqueued
+		respond_to do |format|
+		    format.js
+		end
+	end
 
-		# => Getting credentials
-		@client = get_client_credentials
-
+	def insta_search
 		if @search.search_type == "keywords"			
-			# => Parser keywords
-			# Replaces all blanks+ and end of lines, for single-space. 
-			keywords_query = keywords_raw.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, '')
-			# keywords_array = keywords_space_separated.split(" ")
-			# # String <- Coma separated keywords
-			# keywords_str = keywords_array.join(",")
-
-			# => Parser geocode
-			geocode = latitude_raw.to_s + "," + longitude_raw.to_s + "," + radius_raw.to_s + "km"
-			
-			if current_user.search_queue.blank?
-				search_keywords keywords_query, geocode
-			else
-				# => Call to Async Worker for Tweet Search
-				TweetSearchWorker.perform_async current_user.id, @search.id, keywords_query, geocode, lang_raw 
-			end
+			geocode = @search.get_geocode
+			search_keywords keywords_query, geocode
 		elsif @search.search_type == "tusers"
-			# => Parser tuser
-			# Replaces all blanks+ and end of lines, for single-space. 
-			keywords_space_separated = keywords_raw.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, '')
-			keywords_array = keywords_space_separated.split(" ")
-
-			tuser_query = keywords_array.first 
-			
+			keywords_array = @search.keywords.split(" ")
+			tuser_query = keywords_array.first 			
 			search_tusers tuser_query, @search.result_type
-		end		
+		end
 	end
 
 	def search_keywords query, georeference

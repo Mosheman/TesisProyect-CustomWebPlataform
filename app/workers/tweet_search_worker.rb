@@ -2,7 +2,7 @@ class TweetSearchWorker
 	include Sidekiq::Worker
 	sidekiq_options :retry => false
 	
-	def perform user_id, search_id, query, geocode, lang
+	def perform user_id, search_id, query, geocode
 
 		client = get_client_credentials user_id["$oid"]
 		# => Getting rate limits status
@@ -11,11 +11,12 @@ class TweetSearchWorker
 
 		@search = Search.find search_id["$oid"] 
 		begin
-			if lang
-				tweets_retrived = client.search(query, result_type: @search.result_type, geocode: geocode, lang: lang).take(180).collect
-			else
-				tweets_retrived = client.search(query, result_type: @search.result_type, geocode: geocode).take(180).collect
-			end				
+			# if @search.lang
+			# 	tweets_retrived = client.search(query, result_type: @search.result_type, geocode: geocode, lang: @search.lang).take(180).collect
+			# else
+			# 	tweets_retrived = client.search(query, result_type: @search.result_type, geocode: geocode).take(180).collect
+			# end				
+			tweets_retrived = client.search(query, result_type: @search.result_type, geocode: geocode, lang: @search.lang).take(180).collect		
 			tweets_retrived.each do |tweet| 
 				num_attempts += 1
 				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)

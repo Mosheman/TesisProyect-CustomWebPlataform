@@ -34,9 +34,10 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  field :search_queue, type: Array
+  #field :search_queue, type: Array
 
   embeds_one :twitter_credential
+  embeds_one :queue
 
   has_many :searches
 
@@ -52,5 +53,14 @@ class User
       end
     end
     @count
+  end
+
+  def has_pending_queue_searches
+    result = queue ? (queue.searches.count > 0) : false
+    result
+  end
+
+  def has_credentials
+    return (twitter_credential.consumer_key or twitter_credential.access_token)  
   end
 end

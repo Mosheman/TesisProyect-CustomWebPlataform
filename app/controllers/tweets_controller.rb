@@ -4,14 +4,15 @@ class TweetsController < ApplicationController
   # GET /tweets
   # GET /tweets.json
   def index
-    @tweets = Tweet.all
+    @search = current_user.searches.find(params[:search_id])
+    @tweets = @search ? @search.tweets : nil
   end
 
   # GET /tweets/1
   # GET /tweets/1.json
   def show
-    @search = Search.find(params[:search_id])
-    @tweet = Tweet.find params[:id]
+    @search = current_user.searches.find(params[:search_id])
+    @tweet = @search ? @search.tweets.find params[:id] : nil
   end
 
   # GET /tweets/new
