@@ -5,10 +5,10 @@ class SearchesController < ApplicationController
 		
 	end
 
-	def start_search		
-		if @search.status == :processing
-			insta_search
-		elsif @search.status == :waiting
+	def start_search	
+		if @search.status == "processing"
+			instant_search
+		elsif @search.status == "waiting"
 			search_enqueued
 		end
 	end
@@ -19,12 +19,12 @@ class SearchesController < ApplicationController
 		end
 	end
 
-	def insta_search
+	def instant_search
 		if @search.search_type == "keywords"			
 			geocode = @search.get_geocode
-			search_keywords keywords_query, geocode
+			search_keywords @search.keywords, geocode
 		elsif @search.search_type == "tusers"
-			keywords_array = @search.keywords.split(" ")
+			keywords_array = @search.keywords ? @search.keywords.split(" ") : []
 			tuser_query = keywords_array.first 			
 			search_tusers tuser_query, @search.result_type
 		end
@@ -35,7 +35,7 @@ class SearchesController < ApplicationController
 		@max_attempts = 180
 		@num_attempts = 0
 		begin
-			tweets_retrived = @client.search(query, result_type: @search.result_type, geocode: georeference).take(180).collect
+			tweets_retrived = @current_client.search(query, result_type: @search.result_type, geocode: georeference).take(180).collect
 			tweets_retrived.each do |tweet| 
 				@num_attempts += 1
 				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
@@ -58,13 +58,13 @@ class SearchesController < ApplicationController
 		@num_attempts = 0
 		begin
 			if query_type == "following"
-				tusers_retrived = @client.friends tuser_query
+				tusers_retrived = @current_client.friends tuser_query
 				tusers_retrived.each do |tuser|
 					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 				end
 			elsif query_type == "followers"
-				tusers_retrived = @client.followers tuser_query
+				tusers_retrived = @current_client.followers tuser_query
 				tusers_retrived.each do |tuser|
 					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
@@ -85,7 +85,7 @@ class SearchesController < ApplicationController
 	# GET /searches
 	# GET /searches.json
 	def index
-		@searches = current_user.searches
+		@searches = current_user.searches.order("created_at DESC")
 	end
 
 	# GET /searches/1

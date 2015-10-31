@@ -38,11 +38,15 @@ class Search
 
   def dispatch_search
     if has_pending_queue_searches
-      status = :waiting
+      self.status = :waiting
       enqueue
     else
-      status = :processing
+      self.status = :processing
     end
+  end
+
+  def has_pending_queue_searches
+    result = user.queue ? user.queue.count > 0 : false
   end
 
   def enqueue
