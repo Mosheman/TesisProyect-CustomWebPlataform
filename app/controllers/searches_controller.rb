@@ -65,6 +65,7 @@ class SearchesController < ApplicationController
 				end
 			elsif query_type == "followers"
 				tusers_retrived = @current_client.followers tuser_query
+				binding.pry
 				tusers_retrived.each do |tuser|
 					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
