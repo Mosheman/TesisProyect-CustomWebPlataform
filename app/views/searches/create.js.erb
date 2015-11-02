@@ -1,17 +1,3 @@
-<% if @search.has_data %>
-	<% if @search.search_type == "keywords" %>
-		<% @search.tweets.each do |db_tweet| %>
-			$('#log-div').prepend("<li class='list-group-item'><%= db_tweet.twitters_tweet[:text].to_s %></li>");
-		<% end %>
-	<% elsif @search.search_type == "tusers" %>
-		<% @search.twitter_users.each do |db_tuser| %>
-			$('#log-div').prepend("<li class='list-group-item'><%= db_tuser.twitters_user[:name].to_s %></li>");
-		<% end %>
-	<% end %>
-<% else %>
-	$('#log-div').prepend("<li class='list-group-item'>No hay resultados encontrados.</li>");
-<% end %>
-
 $target = document.getElementById('search-spinner');
 while ($target.hasChildNodes()) {
     $target.removeChild($target.lastChild);
@@ -19,3 +5,17 @@ while ($target.hasChildNodes()) {
 
 $('#search-btn').prop('disabled', false);
 $('#search-btn').prop('value', "Buscar");
+
+<% if @search.search_type == "keywords" %>
+	<% @search.tweets.each do |db_tweet| %>
+		$('#log-div').prepend("<li class='list-group-item'><a href='<%= search_tweet_path(@search.id, db_tweet.id) %>'><span class='badge'><%= db_tweet.twitters_tweet[:user][:screen_name].to_s %></span><%= db_tweet.twitters_tweet[:text].to_s %></a></li>");
+	<% end %>
+<% elsif @search.search_type == "tusers" %>
+	<% @search.twitter_users.each do |db_tuser| %>
+		$('#log-div').prepend("<li class='list-group-item'><a href='<%= search_twitter_user_path(@search.id, db_tuser.id) %>'><%= db_tuser.twitters_user[:name].to_s %></a></li>");
+	<% end %>
+<% end %>
+
+<% if !@search.has_data %>
+	$('#log-div').prepend("<li class='list-group-item'>No hay resultados encontrados.</li>");
+<% end %>

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Panel de Resumen <small>Información General</small>
+                    Panel de resumen <small>Información General</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li class="active">
@@ -108,7 +108,40 @@
                 </div>
                 <!-- /.row -->
 
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Progreso de búsquedas realizadas</div>
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Tipo de búsqueda</th>
+                                    <th>Palabras clave</th>
+                                    <th>Estado de la búsqueda</th>
+                                    <th>Datos recopilados hasta ahora</th>
+                                    <th>Fecha creación</th>
+                                    <th colspan="2"></th>
+                                  </tr>
+                                </thead>
 
+                                <tbody>
+                                  <% @searches.each do |search| %>
+                                    <tr>
+                                        <td><%=  %></td>
+                                      
+                                        <td>Indefinido</td>
+                                      
+                                        <td><%= link_to 'Ver', user_search_path(search), class: "btn btn-info btn-sm" %></td>
+                                      
+                                      <td><%= link_to 'Eliminar', search, method: :delete,# data: { confirm: 'Are you sure?' }, 
+                                      class: "btn btn-danger btn-sm" %></td>
+                                    </tr>
+                                  <% end %>
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                </div>
 
 
 

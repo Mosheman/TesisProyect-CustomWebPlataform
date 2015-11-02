@@ -78,7 +78,7 @@ class Search
   end
 
   def has_data
-    ((!twitter_users.blank?) or (!tweets.blank?)) 
+    ( !twitter_users.blank? or !tweets.blank? ) 
   end
 
   def get_calls
