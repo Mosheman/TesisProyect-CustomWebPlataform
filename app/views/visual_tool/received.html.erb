@@ -1,0 +1,66 @@
+<div id="page-wrapper">
+    <div class="container-fluid margin-layout">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Paquetes recibidos
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i> <%= link_to "Inicio", visual_tool_index_path %>
+                    </li>
+                    <li class="active">
+                        <i class="glyphicon glyphicon-th-list"></i> Recibidos
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">Total de paquetes recibidos</div>
+                  <!-- <div class="panel-body">
+
+                  </div> -->
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Hora</th>
+                        <th>Fecha</th>
+                        <th>Tipo de datos</th>
+                        <th>Cantidad de datos</th>
+                        <th>Emisor</th>
+                        <th colspan="2"></th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% @packages.each do |pack| %>
+                        <tr>
+                            <td><%=  %></td>
+                          
+                            <td>Indefinido</td>
+                          
+                            <td><%= link_to 'Ver', package_show_tweets_path(pack), class: "btn btn-info btn-sm" %></td>
+                          
+                          <td><%= link_to 'Eliminar', package, method: :delete,# data: { confirm: 'Are you sure?' }, 
+                          class: "btn btn-danger btn-sm" %></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                 
+                </div>
+
+            </div>
+            <!-- /.col -->         
+        </div>
+        <!-- /.row -->
+    </div>
+</div>

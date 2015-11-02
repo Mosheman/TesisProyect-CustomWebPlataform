@@ -1,0 +1,2 @@
+module VisualToolHelper
+end

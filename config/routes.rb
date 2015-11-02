@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
 
   namespace :api, :defaults => {:format => :json} do
-    
+
   end
+
+  # Visualization Tool
+  get "visual_tool/index"
+  get "visual_tool/massive_push"
+  get "visual_tool/received"
+  get "visual_tool/tweets_viewer"
+  get "visual_tool/tweets_visualizer"
+  get "visual_tool/users_viewer"
+  get "visual_tool/users_visualizer"
 
   resources :searches do
     get "show_tweets", to: "searches#show_tweets"
