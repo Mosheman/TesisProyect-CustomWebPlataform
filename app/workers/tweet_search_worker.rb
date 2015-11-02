@@ -6,8 +6,8 @@ class TweetSearchWorker
 
 		client = get_client_credentials user_id["$oid"]
 		# => Getting rate limits status
-		max_attempts = 179
-		num_attempts = 0
+		# max_attempts = 179
+		# num_attempts = 0
 
 		@search = Search.find search_id["$oid"] 
 		begin
@@ -34,12 +34,7 @@ class TweetSearchWorker
 	end
 	def get_client_credentials user_id
 		user = User.find user_id
-		client = Twitter::REST::Client.new do |config|
-			config.consumer_key        = user.twitter_credential.consumer_key
-			config.consumer_secret     = user.twitter_credential.consumer_secret
-			config.access_token        = user.twitter_credential.access_token
-			config.access_token_secret = user.twitter_credential.access_token_secret
-		end
-		return client
+		client = user.twitter_credential ? user.twitter_credential.get_client : nil
+		client
 	end
 end
