@@ -33,6 +33,7 @@ class Search
   belongs_to :queue
   has_many :tweets
   has_many :twitter_users
+  has_many :twitter_requests
 
   embeds_many :jobs
 
@@ -46,11 +47,12 @@ class Search
   end
 
   def has_pending_queue_searches
-    result = user.queue ? user.queue.count > 0 : false
+    user.queue ? (user.queue.count) > 0 : false
   end
 
   def enqueue
-    user.queue.searches << self  
+    user.queue.searches << self
+    start_async
   end
 
   def start_async
@@ -73,5 +75,29 @@ class Search
     # => Parser geocode from coords & radius
     geocode = latitude.to_s + "," + longitude.to_s + "," + radius.to_s + "km"
     geocode
+  end
+
+  def has_data
+    ((!twitter_users.blank?) or (!tweets.blank?)) 
+  end
+
+  def get_calls
+    calls_count = get_tweets_count + get_tusers_count
+    
+    if jobs.blank?
+      calls_count
+    else
+      jobs.each do |job|
+        calls_count += job.calls
+      end
+    end    
+  end
+
+  def get_tweets_count
+    tweets.blank? ? 0 : tweets.count
+  end
+
+  def get_tusers_count
+    twitter_users.blank? ? 0 : twitter_users.count
   end
 end

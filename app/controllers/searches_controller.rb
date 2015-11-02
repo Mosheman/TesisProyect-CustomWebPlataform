@@ -1,10 +1,6 @@
 class SearchesController < ApplicationController
 	before_action :set_search, only: [:show, :edit, :update, :destroy]
 
-	def rate_limit_status
-		
-	end
-
 	def start_search	
 		if @search.status == "processing"
 			instant_search
@@ -35,11 +31,12 @@ class SearchesController < ApplicationController
 		@max_attempts = 180
 		@num_attempts = 0
 		begin
-			tweets_retrived = @current_client.search(query, result_type: @search.result_type, geocode: georeference).take(180).collect
+			tweets_retrived = get_twitter_client.search(query, result_type: @search.result_type, geocode: georeference).take(180).collect
 			tweets_retrived.each do |tweet| 
 				@num_attempts += 1
 				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
 			end	
+			current_user.twitter_credential.set_request @search.id
 		rescue Twitter::Error::TooManyRequests => error
 			if @num_attempts <= @max_attempts
 			# NOTE: Your process could go to sleep for up to 15 minutes but if you
@@ -58,20 +55,20 @@ class SearchesController < ApplicationController
 		@num_attempts = 0
 		begin
 			if query_type == "following"
-				tusers_retrived = @current_client.friends tuser_query
+				tusers_retrived = get_twitter_client.friends tuser_query
 				tusers_retrived.each do |tuser|
 					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 				end
 			elsif query_type == "followers"
-				tusers_retrived = @current_client.followers tuser_query
-				binding.pry
+				tusers_retrived = get_twitter_client.followers tuser_query
 				tusers_retrived.each do |tuser|
 					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 				end
 			end
-		rescue Twitter::Error::TooManyRequests => error
+			current_user.twitter_credential.set_request @search.id
+		rescue Twitter::Error => error
 			if @num_attempts <= @max_attempts
 			# NOTE: Your process could go to sleep for up to 15 minutes but if you
 			# retry any sooner, it will almost certainly fail with the same exception.
@@ -122,9 +119,6 @@ class SearchesController < ApplicationController
 
 	# GET /searches/new
 	def new
-		n_calls = rate_limit_status	
-		@n_calls = 180
-
 		st_one = SearchType.new("Palabras clave", true, "keywords_searches", "keywords")
 		st_two = SearchType.new("Usuarios", false, "tusers_searches", "tusers")
 		@search_types = [st_one, st_two]
@@ -190,6 +184,10 @@ class SearchesController < ApplicationController
 
 	def set_params_searchtype search_type
 		params = ActionController::Parameters.new(search_type: search_type)
+	end
+
+	def get_twitter_client
+		current_user.twitter_credential ? current_user.twitter_credential.get_client : redirect_to(settings_index_path)
 	end
 
 	private

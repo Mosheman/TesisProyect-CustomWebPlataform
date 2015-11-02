@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :api, :defaults => {:format => :json} do
+    
+  end
+
   resources :searches do
     get "show_tweets", to: "searches#show_tweets"
     get "show_users", to: "searches#show_users"

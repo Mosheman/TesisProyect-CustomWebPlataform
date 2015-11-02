@@ -12,7 +12,7 @@ class TweetsController < ApplicationController
   # GET /tweets/1.json
   def show
     @search = current_user.searches.find(params[:search_id])
-    @tweet = @search ? @search.tweets.find params[:id] : nil
+    @tweet = @search ? @search.tweets.find(params[:id]) : nil
   end
 
   # GET /tweets/new
