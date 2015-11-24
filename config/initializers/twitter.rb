@@ -1,0 +1,1 @@
+#Twitter.connection_options = {:timeout => 5, :open_timeout => 2}

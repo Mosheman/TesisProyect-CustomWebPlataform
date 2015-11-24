@@ -40,6 +40,7 @@ class User
   embeds_one :queue
 
   has_many :searches
+  has_many :packages
 
   def data_count
     @count = {tweets: 0, users: 0, geo: 0}

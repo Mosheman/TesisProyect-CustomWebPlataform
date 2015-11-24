@@ -3,6 +3,7 @@ class TwitterUser
   include Mongoid::Timestamps
 
   field :twitters_user, type: Hash
-  
+
   belongs_to :search
+  belongs_to :package
 end

@@ -28,14 +28,14 @@ class SearchesController < ApplicationController
 
 	def search_keywords query, georeference
 		# => Getting rate limits status
-		@max_attempts = 180
+		@max_attempts = 3
 		@num_attempts = 0
 		begin
+			@num_attempts += 1
 			tweets_retrived = get_twitter_client.search(query, result_type: @search.result_type, geocode: georeference).take(180).collect
 			tweets_retrived.each do |tweet| 
-				@num_attempts += 1
 				@search.tweets << Tweet.new(twitters_tweet: tweet.to_hash)
-			end	
+			end
 			current_user.twitter_credential.set_request @search.id
 		rescue Twitter::Error::TooManyRequests => error
 			if @num_attempts <= @max_attempts
@@ -51,19 +51,18 @@ class SearchesController < ApplicationController
 
 	def search_tusers tuser_query, query_type
 		# => Getting rate limits status
-		@max_attempts = 180
+		@max_attempts = 3
 		@num_attempts = 0
 		begin
+			@num_attempts += 1
 			if query_type == "following"
 				tusers_retrived = get_twitter_client.friends tuser_query
 				tusers_retrived.each do |tuser|
-					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 				end
 			elsif query_type == "followers"
 				tusers_retrived = get_twitter_client.followers tuser_query
 				tusers_retrived.each do |tuser|
-					@num_attempts += 1
 					@search.twitter_users << TwitterUser.new(twitters_user: tuser.to_hash)
 				end
 			end
@@ -135,11 +134,11 @@ class SearchesController < ApplicationController
 	def create
 		current_user.searches << Search.new(search_params)
 		@search = current_user.searches.last
+  		start_search
 
 		respond_to do |format|
 		  if @search
-	  		start_search
-		    format.js
+		    format.js {render :layout=>false}
 		    # format.html { redirect_to @search, notice: 'Search was successfully executed.' }
 		    # format.json { render :show, status: :created, location: @search }
 		  else

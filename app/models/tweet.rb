@@ -14,4 +14,5 @@ class Tweet
   # field :text, type: String
 
   belongs_to :search
+  belongs_to :package
 end

@@ -18,7 +18,7 @@ class TwitterCredential
 			config.consumer_secret     = user.twitter_credential.consumer_secret
 			config.access_token        = user.twitter_credential.access_token
 			config.access_token_secret = user.twitter_credential.access_token_secret
-		end  
+		end
 		current_client
 	end
 

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :packages
   namespace :api, :defaults => {:format => :json} do
 
   end
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
   get "visual_tool/tweets_visualizer"
   get "visual_tool/users_viewer"
   get "visual_tool/users_visualizer"
+  get "visual_tool/inner_receiver"
 
   resources :searches do
     get "show_tweets", to: "searches#show_tweets"
@@ -22,9 +24,10 @@ Rails.application.routes.draw do
         get :set_searchtype
       end
   end
+
   #post 'searches/start_search'
   #get 'searches/index'
-  
+
   resources :twitter_credentials
   get 'settings/index'
 
