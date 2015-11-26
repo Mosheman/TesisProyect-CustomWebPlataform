@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :packages
   namespace :api, :defaults => {:format => :json} do
 
   end
@@ -14,6 +13,9 @@ Rails.application.routes.draw do
   get "visual_tool/users_viewer"
   get "visual_tool/users_visualizer"
   get "visual_tool/inner_receiver"
+  scope "visual_tool" do
+    resources :packages
+  end
 
   resources :searches do
     get "show_tweets", to: "searches#show_tweets"

@@ -1,10 +1,11 @@
 class PackagesController < ApplicationController
+  layout "visual"
   before_action :set_package, only: [:show, :edit, :update, :destroy]
 
   # GET /packages
   # GET /packages.json
   def index
-    @packages = Package.all
+    @packages = current_user.packages
   end
 
   # GET /packages/1
@@ -69,6 +70,6 @@ class PackagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def package_params
-      params.require(:package).permit(:data_type, :data)
+      params.require(:package).permit(:data_type, :transmitter)
     end
 end

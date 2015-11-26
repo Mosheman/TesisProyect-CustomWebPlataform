@@ -157,7 +157,6 @@ GEM
       optionable (~> 0.2.0)
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
     naught (1.0.0)
     nenv (0.2.0)
     netrc (0.10.3)
@@ -289,7 +288,6 @@ DEPENDENCIES
   jquery-rails
   jquery-timepicker-rails
   mongoid
-  mysql2
   pry
   rails (= 4.2.1)
   rest-client
@@ -307,4 +305,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.10.5
+   1.10.6

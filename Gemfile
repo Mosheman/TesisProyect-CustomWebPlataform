@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3'
-gem 'mysql2'
+#gem 'mysql2'
 # Mongoid: MongoDB for Rails
 gem "mongoid"
 gem 'bson_ext'

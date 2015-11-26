@@ -41,13 +41,15 @@
                     </thead>
 
                     <tbody>
-                      <% @packages.each do |pack| %>
+                      <% @packages.each do |package| %>
                         <tr>
-                            <td><%=  %></td>
-                          
-                            <td>Indefinido</td>
-                          
-                            <td><%= link_to 'Ver', package_show_tweets_path(pack), class: "btn btn-info btn-sm" %></td>
+                            <td><%=  package.created_at.strftime("%H:%M:%S") %></td>
+                            <td><%=  package.created_at.strftime("%d/%m/%Y") %></td>
+                            <td><%=  package.data_type ? package.data_type : "Indefinido" %></td>
+                            <td><%=  package.data_count %></td>
+                            <td><%=  package.transmitter ? package.data_type : "Indefinido" %></td>
+
+                            <!-- <td><%#= link_to 'Ver', package_show_visual_tool_path(pack), class: "btn btn-info btn-sm" %></td> -->
                           
                           <td><%= link_to 'Eliminar', package, method: :delete,# data: { confirm: 'Are you sure?' }, 
                           class: "btn btn-danger btn-sm" %></td>
