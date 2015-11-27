@@ -1,0 +1,39 @@
+<div id="page-wrapper">
+    <div class="container-fluid margin-layout">
+
+    <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                  Nuevo Estudio
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <%= link_to "Inicio", dashboard_index_path %>
+                    </li>
+                    <li>
+                        <i class="glyphicon glyphicon-book"></i> <%= link_to "Estudios", studies_path %>
+                    </li>
+                    <li class="active">
+                        <i class="glyphicon glyphicon-plus"></i> <%= link_to "Nuevo", studies_path %>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Establecer credenciales de Twitter</div>
+                    <div class="panel-body">
+                        <%= render 'form' %>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+  </div>
+</div>
+

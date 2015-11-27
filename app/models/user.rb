@@ -41,6 +41,7 @@ class User
 
   has_many :searches
   has_many :packages
+  has_many :studies
 
   def data_count
     @count = {tweets: 0, users: 0, geo: 0}

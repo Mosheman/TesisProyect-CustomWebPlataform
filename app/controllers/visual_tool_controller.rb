@@ -24,6 +24,27 @@ class VisualToolController < ApplicationController
 		@packages = current_user.packages
 	end
 
+
+	def action_dispatcher
+		package_ids = params["package_ids"]
+		if params["visualize"]
+			tweets = Array.new
+			tusers = Array.new
+			packages = current_user.packages.find package_ids
+			packages.each do |package|
+				if package.data_type == :tweets
+					tweets << package.tweets
+				elsif package.data_type == :tusers
+					tusers << package.tusers
+				end
+					
+	    	end
+		elsif params["new_study"]
+		  
+		end
+
+	end
+
 	def tweets_viewer
 		@visual_tweets = []
 	end

@@ -6,6 +6,7 @@ class Package
   field :transmitter, type: String
 
   belongs_to :user
+  belongs_to :study
 
   has_many :tweets
   has_many :twitter_users

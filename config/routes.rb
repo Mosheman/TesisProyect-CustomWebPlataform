@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   # Visualization Tool
   get "visual_tool/index"
+  get "visual_tool/action_dispatcher"
   get "visual_tool/massive_push"
   get "visual_tool/received"
   get "visual_tool/tweets_viewer"
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
   get "visual_tool/inner_receiver"
   scope "visual_tool" do
     resources :packages
+    resources :studies
   end
 
   resources :searches do

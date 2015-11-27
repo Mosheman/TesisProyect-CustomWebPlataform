@@ -19,50 +19,70 @@
         </div>
         <!-- /.row -->
 
-        <div class="row">
+        <%= form_tag visual_tool_action_dispatcher_path, :method => :get do %>
 
+          <div class="row">
             <div class="col-lg-12">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">Total de paquetes recibidos</div>
-                  <!-- <div class="panel-body">
-
-                  </div> -->
-
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Hora</th>
-                        <th>Fecha</th>
-                        <th>Tipo de datos</th>
-                        <th>Cantidad de datos</th>
-                        <th>Emisor</th>
-                        <th colspan="2"></th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <% @packages.each do |package| %>
-                        <tr>
-                            <td><%=  package.created_at.strftime("%H:%M:%S") %></td>
-                            <td><%=  package.created_at.strftime("%d/%m/%Y") %></td>
-                            <td><%=  package.data_type ? package.data_type : "Indefinido" %></td>
-                            <td><%=  package.data_count %></td>
-                            <td><%=  package.transmitter ? package.transmitter : "Indefinido" %></td>
-
-                            <!-- <td><%#= link_to 'Ver', package_show_visual_tool_path(pack), class: "btn btn-info btn-sm" %></td> -->
-                          
-                          <td><%= link_to 'Eliminar', package, method: :delete,# data: { confirm: 'Are you sure?' }, 
-                          class: "btn btn-danger btn-sm" %></td>
-                        </tr>
-                      <% end %>
-                    </tbody>
-                  </table>
-                 
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-lg-2 pull-right">
+                    <%= submit_tag "Visualizar", :name => "visualize", :class => "btn btn-success" %>
+                  </div>
+                  <div class="col-lg-1 pull-right">
+                    <%= submit_tag 'Crear Estudio', :name => "new_study", :class => "btn btn-primary" %>
+                  </div>
                 </div>
-
+              </div>
             </div>
-            <!-- /.col -->         
-        </div>
-        <!-- /.row -->
+          </div>
+
+          <div class="row">
+
+              <div class="col-lg-12">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">Total de paquetes recibidos</div>
+                    <!-- <div class="panel-body">
+
+                    </div> -->
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th colspan="1"></th>
+                          <th>Hora</th>
+                          <th>Fecha</th>
+                          <th>Tipo de datos</th>
+                          <th>Cantidad de datos</th>
+                          <th>Emisor</th>
+                          <th colspan="2"></th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <% @packages.each do |package| %>
+                          <tr>
+                              <td><%=  check_box_tag "package_ids[]", package.id %></td>
+                              <td><%=  package.created_at.strftime("%H:%M:%S") %></td>
+                              <td><%=  package.created_at.strftime("%d/%m/%Y") %></td>
+                              <td><%=  package.data_type ? package.data_type : "Indefinido" %></td>
+                              <td><%=  package.data_count %></td>
+                              <td><%=  package.transmitter ? package.transmitter : "Indefinido" %></td>
+
+                              <!-- <td><%#= link_to 'Ver', package_show_visual_tool_path(pack), class: "btn btn-info btn-sm" %></td> -->
+                            
+                            <td><%= link_to 'Eliminar', package, method: :delete,# data: { confirm: 'Are you sure?' }, 
+                            class: "btn btn-danger btn-sm" %></td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                   
+                  </div>
+
+              </div>
+              <!-- /.col -->         
+          </div>
+          <!-- /.row -->
+        <% end %>  
     </div>
 </div>
