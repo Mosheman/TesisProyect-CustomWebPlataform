@@ -564,14 +564,6 @@ img {
 	margin-right: 10px;
 }
 
-#cy {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
 #info {
   color: #c88;
   font-size: 1em;

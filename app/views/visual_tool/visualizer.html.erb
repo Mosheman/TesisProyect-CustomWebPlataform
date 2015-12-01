@@ -1,0 +1,201 @@
+<div id="page-wrapper">
+  <div class="container-fluid margin-layout">
+    
+    <div class="panel panel-default">
+      <div class="panel-body">
+
+
+          <!-- Nav tabs -->
+          <ul id="myTabs" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+            <li role="presentation"><a href="#tweets" aria-controls="tweets" role="tab" data-toggle="tab">Tweets</a></li>
+            <li role="presentation"><a href="#tusers" aria-controls="tusers" role="tab" data-toggle="tab">Users</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div id="myTabContent" class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tweets">
+                
+                
+                  <div class="well">
+                    <div id="tweets-visualizer-map"></div>
+                  </div>
+                
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tusers">
+                
+              <div id="page-wrapper">                  
+                    <div id="cy"></div>
+              </div>
+
+            </div>
+          </div>
+      
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  var initialize, map, marker, myCenter, resizeMap, resizingMap, setValueLatLng;
+  // var coordsArray = <%#= raw @coords.to_json %>
+  var geoPointArray = [];
+  var markersArray = [];
+  // var latCenter = parseFloat("<%#= escape_javascript @search.latitude %>");
+  // var lngCenter = parseFloat("<%#= escape_javascript @search.longitude %>");
+  // var radiusCenter = parseInt("<%#= escape_javascript @search.radius %>");
+  map = void 0;
+
+  myCenter = new google.maps.LatLng( -33.45, -70.6667);
+
+  var index;
+
+  // for (index = 0; index < coordsArray.length; ++index) {
+  //   geoPointArray[index] = new google.maps.LatLng(coordsArray[index].lat, coordsArray[index].lng); 
+  //   markersArray[index] = new google.maps.Marker({
+  //       position: geoPointArray[index],
+  //       draggable: false,
+  //       title: "Autor: "+coordsArray[index].screen_name
+  //   });
+  // }
+
+  marker = new google.maps.Marker({
+    position: myCenter,
+    draggable: false
+  });
+
+  initialize = function() {
+    var circle, mapProp;
+    mapProp = {
+      center: myCenter,
+      zoom: 10,
+      draggable: true,
+      disableDefaultUI: false,
+      disableDoubleClickZoom: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('tweets-visualizer-map'), mapProp);
+    // marker.setMap(map);
+    for (index = 0; index < markersArray.length; ++index) {
+        markersArray[index].setMap(map);
+    }
+    // circle = new google.maps.Circle({
+    //   map: map,
+    //   clickable: false,
+    //   radius: radiusCenter*1000,
+    //   center: myCenter,
+    //   fillColor: '#55BF3B',
+    //   strokeColor: '#313131',
+    //   strokeOpacity: .4,
+    //   strokeWeight: .8
+    // });
+  };
+
+  resizeMap = function() {
+    if (typeof map === 'undefined') {
+      return;
+    }
+    setTimeout((function() {
+      resizingMap();
+    }), 400);
+  };
+
+  resizingMap = function() {
+    var center;
+    if (typeof map === 'undefined') {
+      return;
+    }
+    center = map.getCenter();
+    google.maps.event.trigger(map, 'resize');
+    map.setCenter(center);
+  };
+
+  google.maps.event.addDomListenerOnce(window, 'mousemove', initialize);
+  google.maps.event.addDomListener(window, 'resize', resizingMap());
+
+</script>
+
+
+<script type="text/javascript">
+// document.addEventListener('DOMContentLoaded', function(){ // on dom ready
+
+// var cy = cytoscape({
+//   container: document.querySelector('#cy'),
+    
+//   boxSelectionEnabled: false,
+//   autounselectify: true,
+  
+//   style: cytoscape.stylesheet()
+//     .selector('node')
+//       .css({
+//         'content': 'data(name)',
+//         'text-valign': 'center',
+//         'color': 'white',
+//         'text-outline-width': 2,
+//         'text-outline-color': '#213c4d'
+//       })
+//     .selector('edge')
+//       .css({
+//         'target-arrow-shape': 'triangle'
+//       })
+//     .selector(':selected')
+//       .css({
+//         'background-color': 'black',
+//         'line-color': 'black',
+//         'target-arrow-color': 'black',
+//         'source-arrow-color': 'black'
+//       })
+//     .selector('.faded')
+//       .css({
+//         'opacity': 0.25,
+//         'text-opacity': 0
+//       }),
+  
+//   elements: {
+//     nodes: [
+//       { data: { id: 'j', name: 'Jerry' } },
+//       { data: { id: 'e', name: 'Elaine' } },
+//       { data: { id: 'k', name: 'Kramer' } },
+//       { data: { id: 'g', name: 'George' } }
+//     ],
+//     edges: [
+//       { data: { source: 'j', target: 'e' } },
+//       { data: { source: 'j', target: 'k' } },
+//       { data: { source: 'j', target: 'g' } },
+//       { data: { source: 'e', target: 'j' } },
+//       { data: { source: 'e', target: 'k' } },
+//       { data: { source: 'k', target: 'j' } },
+//       { data: { source: 'k', target: 'e' } },
+//       { data: { source: 'k', target: 'g' } },
+//       { data: { source: 'g', target: 'j' } }
+//     ]
+//   },
+  
+//   layout: {
+//     name: 'grid',
+//     padding: 10
+//   }
+// });
+
+// cy.on('tap', 'node', function(e){
+//   var node = e.cyTarget; 
+//   var neighborhood = node.neighborhood().add(node);
+  
+//   cy.elements().addClass('faded');
+//   neighborhood.removeClass('faded');
+// });
+
+// cy.on('tap', function(e){
+//   if( e.cyTarget === cy ){
+//     cy.elements().removeClass('faded');
+//   }
+// });
+
+// }); // on dom ready
+</script>

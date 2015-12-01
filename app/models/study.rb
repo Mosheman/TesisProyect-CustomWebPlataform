@@ -7,4 +7,5 @@ class Study
 
   belongs_to :user
   has_many :packages
+  has_many :markers
 end

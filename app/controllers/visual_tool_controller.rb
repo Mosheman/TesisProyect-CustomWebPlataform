@@ -25,24 +25,12 @@ class VisualToolController < ApplicationController
 	end
 
 
-	def action_dispatcher
+	def visualizer_dispatcher
+		visualizer_type = params["visualizer_type"]
+		# => TODO: Limit to 20 package selections
 		package_ids = params["package_ids"]
-		if params["visualize"]
-			tweets = Array.new
-			tusers = Array.new
-			packages = current_user.packages.find package_ids
-			packages.each do |package|
-				if package.data_type == :tweets
-					tweets << package.tweets
-				elsif package.data_type == :tusers
-					tusers << package.tusers
-				end
-					
-	    	end
-		elsif params["new_study"]
-		  
-		end
 
+		redirect_to tweets_visualizer_index_path(package_ids: package_ids)
 	end
 
 	def tweets_viewer
@@ -53,11 +41,4 @@ class VisualToolController < ApplicationController
 		@visual_users = []
 	end
 
-	def tweets_visualizer
-
-	end
-
-	def users_visualizer
-
-	end
 end

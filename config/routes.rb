@@ -10,13 +10,13 @@ Rails.application.routes.draw do
   get "visual_tool/massive_push"
   get "visual_tool/received"
   get "visual_tool/tweets_viewer"
-  get "visual_tool/tweets_visualizer"
   get "visual_tool/users_viewer"
-  get "visual_tool/users_visualizer"
+  get "visual_tool/visualizer_dispatcher"
   get "visual_tool/inner_receiver"
   scope "visual_tool" do
     resources :packages
     resources :studies
+    get "tweets_visualizer/index", to: "tweets_visualizer#index"
   end
 
   resources :searches do
