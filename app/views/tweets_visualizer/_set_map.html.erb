@@ -1,80 +1,12 @@
  <script type="text/javascript">
-  //console.log("<%= j @tweets.to_s %>")
-  var initialize, map, marker, myCenter, resizeMap, resizingMap, setValueLatLng;
-  // var coordsArray = <%#= raw @coords.to_json %>
+
   var tweetMarkers = <%= raw @markers.to_json %>
 
-  var geoPointArray = [];
-  var markersArray = [];
-  // var latCenter = parseFloat("<%#= escape_javascript @search.latitude %>");
-  // var lngCenter = parseFloat("<%#= escape_javascript @search.longitude %>");
-  // var radiusCenter = parseInt("<%#= escape_javascript @search.radius %>");
-  map = void 0;
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {styles: getMyMapStyleOne()}, internal: {id: 'tweets-visualizer-map'}}, function(){
+    markers = handler.addMarkers(tweetMarkers);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
 
-  myCenter = new google.maps.LatLng( -33.45, -70.6667);
-
-  var index;
-
-  for (index = 0; index < tweetMarkers.length; ++index) {
-    geoPointArray[index] = new google.maps.LatLng(tweetMarkers[index].lat, tweetMarkers[index].lng); 
-    markersArray[index] = new google.maps.Marker({
-        position: geoPointArray[index],
-        draggable: false,
-        title: "Autor: "+tweetMarkers[index].owner
-    });
-  }
-
-  // marker = new google.maps.Marker({
-  //   position: myCenter,
-  //   draggable: false
-  // });
-
-  initialize = function() {
-    var circle, mapProp;
-    mapProp = {
-      center: myCenter,
-      zoom: 10,
-      draggable: true,
-      disableDefaultUI: false,
-      disableDoubleClickZoom: true,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById('tweets-visualizer-map'), mapProp);
-    // marker.setMap(map);
-    for (index = 0; index < markersArray.length; ++index) {
-        markersArray[index].setMap(map);
-    }
-    // circle = new google.maps.Circle({
-    //   map: map,
-    //   clickable: false,
-    //   radius: radiusCenter*1000,
-    //   center: myCenter,
-    //   fillColor: '#55BF3B',
-    //   strokeColor: '#313131',
-    //   strokeOpacity: .4,
-    //   strokeWeight: .8
-    // });
-  };
-
-  resizeMap = function() {
-    if (typeof map === 'undefined') {
-      return;
-    }
-    setTimeout((function() {
-      resizingMap();
-    }), 400);
-  };
-
-  resizingMap = function() {
-    var center;
-    if (typeof map === 'undefined') {
-      return;
-    }
-    center = map.getCenter();
-    google.maps.event.trigger(map, 'resize');
-    map.setCenter(center);
-  };
-
-  google.maps.event.addDomListenerOnce(window, 'mousemove', initialize);
-  google.maps.event.addDomListener(window, 'resize', resizingMap());
-</script> 
+</script>

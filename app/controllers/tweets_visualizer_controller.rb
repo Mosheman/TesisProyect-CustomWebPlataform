@@ -1,5 +1,5 @@
 class TweetsVisualizerController < ApplicationController
-	
+
 	def index
 		tweets = Array.new
 		if params["package_ids"]
@@ -7,8 +7,8 @@ class TweetsVisualizerController < ApplicationController
 		elsif params["study_ids"]
 	    	tweets = get_tweets_from_studies params["study_ids"]
 		end
-		
-    	@markers = get_markers_from_tweets tweets
+
+    	@markers = get_markers_from_tweets(tweets)
 	end
 
 	def get_markers_from_tweets tweets
@@ -17,17 +17,19 @@ class TweetsVisualizerController < ApplicationController
 			markers << Marker.new(:owner => tweet.twitters_tweet[:user][:screen_name],
 							:owner_id => tweet.twitters_tweet[:user][:id_str],
 							:text => tweet.twitters_tweet[:text],
-							:lat => tweet.twitters_tweet[:geo][:coordinates][0], 
+							:lat => tweet.twitters_tweet[:geo][:coordinates][0],
 							:lng => tweet.twitters_tweet[:geo][:coordinates][1],
 							:tweet_id => tweet.twitters_tweet[:id_str],
 							:inner_tweet_id => tweet.id,
-							:package_id => tweet.package)
+							:package_id => tweet.package,
+							:infowindow => TweetsVisualizerHelper.get_infowindow_from_tweet(tweet)
+							)
 		end
 		markers
 	end
 
 	def get_tweets_from_packages package_ids
-		tweets = Array.new	
+		tweets = Array.new
 		packages = current_user.packages.find package_ids
 		packages.each do |package|
 			tweets += package.tweets

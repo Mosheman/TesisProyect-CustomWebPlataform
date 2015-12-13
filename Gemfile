@@ -43,7 +43,7 @@ gem 'spinjs-rails'
 # Google maps
 gem 'gmaps4rails'
 gem 'underscore-rails'
-# Slider 
+# Slider
 gem 'bootstrap-slider-rails'
 # Async Background Worker
 gem 'sidekiq'
