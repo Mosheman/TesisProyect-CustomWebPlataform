@@ -1,3 +1,22 @@
 // Place all the styles related to the tweets_visualizer controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#date-slider {
+	p { clear:both; }
+	form { margin: 0 30px;}
+	fieldset { border:0; margin-top: 0em;}
+	label {font-weight: normal; float: left; margin-right: .5em; font-size: 1em;}
+	select {margin-right: 1em; float: left;}
+	.ui-slider {clear: both; top: 5em;}
+}
+
+#date-slider .ui-slider {
+	top: 10px;
+}
+
+#map-visualizer-container {
+	margin-top: 50px;
+}
+
+.ui-slider .ui-slider-scale {font-size: 60%;}

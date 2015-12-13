@@ -25,13 +25,13 @@
 		<%= render 'partials/messages' %>
 
 		<%= yield %>
-		
+
 		<% if user_signed_in? %>
 			</div>
 		<% end -%>
-		
+
 		<%= render 'partials/home_footer' %>
- 		
+
 	  	<%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	</body>
 </html>

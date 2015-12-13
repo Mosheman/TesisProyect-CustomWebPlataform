@@ -1,4 +1,5 @@
 class TweetsVisualizerController < ApplicationController
+	layout "visual"
 
 	def index
 		tweets = Array.new
