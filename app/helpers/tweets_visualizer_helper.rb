@@ -11,4 +11,19 @@ module TweetsVisualizerHelper
 			'</div>'+
 		'</div>')
 	end
+
+	def get_group_item_select tweets
+		groups = []
+		years = []
+		tweets.each do |tweet|
+			year = tweet.twitters_tweet[:created_at].split(" ").last
+			years << year
+			if group[year: year]
+
+			end
+			# group << {
+			# 			year:
+			# 		}
+		end
+	end
 end

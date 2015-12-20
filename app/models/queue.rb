@@ -4,7 +4,7 @@ class Queue
 
   field :status, type: Integer
   field :progress, type: String
-  
+
   embedded_in :user
 
   has_many :searches
