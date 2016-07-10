@@ -3,9 +3,9 @@ class Job
   include Mongoid::Timestamps
 
   field :code, type: String
-  field :status, type: String
+  field :status, type: Integer
   field :calls, type: Integer
   field :progress, type: String
-  
+
   embedded_in :search
 end

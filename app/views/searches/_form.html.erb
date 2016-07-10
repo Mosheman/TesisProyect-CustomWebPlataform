@@ -1,12 +1,13 @@
 
-<%= form_tag({controller: "searches", action: "create"}, 
-                        method: "post", 
-                        class: "form-horizontal", 
+<%= form_tag({controller: "searches", action: "create_quick"},
+                        method: "post",
+                        class: "form-horizontal",
                         remote: true,
+                        class: "form-horizontal",
                         id: "search-form") do %>
 
   <%= hidden_field_tag :search_type, @searchtype_selected.name %>
-  
+
   <div id="searchtype-form">
     <%= render partial: @searchtype_selected.name+"_fields" %>
   </div>
@@ -45,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-info">
+    <!-- <div class="panel panel-info">
       <div class="panel-heading" role="tab" id="headingTwo">
         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
           <h4 class="panel-title">
@@ -60,7 +61,7 @@
           
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- <div class="panel panel-info">
       <div class="panel-heading" role="tab" id="headingThree">
         <h4 class="panel-title">

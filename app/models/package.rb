@@ -3,7 +3,7 @@ class Package
   include Mongoid::Timestamps
 
   field :data_type, type: String
-  field :transmitter, type: String
+  field :transmitter, type: String #Refator to "source"
 
   belongs_to :user
   belongs_to :study

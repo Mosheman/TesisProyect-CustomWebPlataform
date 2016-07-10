@@ -1,10 +1,7 @@
-$target = document.getElementById('search-spinner');
-while ($target.hasChildNodes()) {
-    $target.removeChild($target.lastChild);
-}
-
 $('#search-btn').prop('disabled', false);
 $('#search-btn').prop('value', "Buscar");
+
+$("#log-div").empty();
 
 <% if @search.search_type == "keywords" %>
 	<% @search.tweets.each do |db_tweet| %>

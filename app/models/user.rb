@@ -63,6 +63,10 @@ class User
   end
 
   def has_credentials
-    return (twitter_credential.consumer_key or twitter_credential.access_token)  
+    return (twitter_credential.consumer_key or twitter_credential.access_token)
+  end
+
+  def get_twitter_client
+    self.twitter_credential ? self.twitter_credential.get_client : nil
   end
 end

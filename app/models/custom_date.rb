@@ -5,4 +5,5 @@ class CustomDate
 	field :month, type: Integer
 
 	embedded_in :custom_year
+	embeds_many :markers
 end

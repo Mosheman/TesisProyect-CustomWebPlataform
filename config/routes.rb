@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :tweets
       collection do
         get :set_searchtype
+        post :create_quick
       end
   end
 

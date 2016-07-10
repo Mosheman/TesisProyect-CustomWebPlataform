@@ -17,4 +17,5 @@ class Marker
 
   belongs_to :study
   belongs_to :package
+  embedded_in :custom_date
 end

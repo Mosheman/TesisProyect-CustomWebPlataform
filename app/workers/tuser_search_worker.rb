@@ -2,7 +2,7 @@ class TuserSearchWorker
 	include Sidekiq::Worker
 	sidekiq_options :retry => false
 	
-	def perform client, search_id, keywords, lvl_search
+	def perform user_id, search_id, keywords, lvl_search
 		
 	end
 end
