@@ -62,11 +62,11 @@
                       </div>
                     </div>
 
-                    <div class="form-group">                    
+                    <div class="form-group">
                       <%= label_tag :radius, "Radio (kms)", class: "control-label col-xs-2" %>
                       <div class="col-xs-3 slider-box">
                         <!-- <input id="radius" class"form-control" /> -->
-                        <%= number_field_tag :radius, 10, class: "form-control", min: 1, max:100 %>
+                        <%= select_tag :radius, options_for_select((1..100).to_a.map{|n| [n, n]}), {default: [10,10], class: "form-control", style: "widht: 100%"} %>
                       </div>
                     </div>
 
@@ -77,9 +77,9 @@
                       </div>
                       <div class="col-xs-3">
                         <%= label_tag :measurement_lat, "Grados", class: "control-label" %>
-                      </div> 
+                      </div>
                     </div>
-              
+
                     <div class="form-group">
                       <%= label_tag :longitude, "Longitud", class: "control-label col-xs-2" %>
                       <div class="col-xs-4">
@@ -95,7 +95,7 @@
                   </div>
 
                 </div> <!-- .row -->
-              
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -107,3 +107,16 @@
 
     </div>
 </div>
+
+
+<script type="text/javascript">
+
+$("#radius").selectToUISlider({
+      labels: 2//,//Set the label number
+      // sliderOptions:
+      // {
+      //   change:function(e, ui)
+        });
+$("#radius").hide();
+
+</script>
