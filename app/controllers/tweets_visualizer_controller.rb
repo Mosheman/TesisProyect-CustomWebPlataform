@@ -6,10 +6,16 @@ class TweetsVisualizerController < ApplicationController
 		if params["package_ids"]
 			tweets = get_tweets_from_packages params["package_ids"]
 		elsif params["study_ids"]
-	    	tweets = get_tweets_from_studies params["study_ids"]
+    	tweets = get_tweets_from_studies params["study_ids"]
 		end
 
-    	@markers = get_markers_from_tweets(tweets)
+  	@markers = get_markers_from_tweets(tweets)
+
+  	@first_date = @markers.first.created_at
+  	@last_date = @markers.last.created_at
+  	@years = (@first_date.year..@last_date.year).to_a
+  	@months = []
+  	(1..12).each {|m| @months << {id: m, name: Date::MONTHNAMES[m]} }
 	end
 
 	def get_markers_from_tweets tweets
@@ -23,10 +29,11 @@ class TweetsVisualizerController < ApplicationController
 							:tweet_id => tweet.twitters_tweet[:id_str],
 							:inner_tweet_id => tweet.id,
 							:package_id => tweet.package,
+							:created_at => tweet.twitters_tweet[:created_at],
 							:infowindow => TweetsVisualizerHelper.get_infowindow_from_tweet(tweet)
-							)
+						)
 		end
-		markers
+		markers.sort_by{|m| m[:created_at]}
 	end
 
 	def get_tweets_from_packages package_ids

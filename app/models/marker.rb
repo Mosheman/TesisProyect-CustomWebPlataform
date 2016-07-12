@@ -9,6 +9,7 @@ class Marker
   field :tweet_id, type: String
   field :inner_tweet_id, type: String
   field :infowindow, type: String
+  field :created_at, type: DateTime
   field :picture, type: Hash, default: {
                                           "url": "/assets/comment.png",
                                           "width":  32,
