@@ -7,7 +7,7 @@
 					<optgroup label="<%= year %>">
 						<% @months.each do |month| %>
 							<% (1..days_in_month(month[:id], year)).each do |day| %>
-								<% unless @first_date.month == month[:id] %>
+								<% unless @first_date.month == month[:id] and @first_date.day == day %>
 									<option value="<%= day %>/<%= month[:id] %>">
 										<%= "#{month[:name].first(3)} #{day}" %>
 									</option>
@@ -28,7 +28,7 @@
 					<optgroup label="<%= year %>">
 						<% @months.each do |month| %>
 							<% (1..days_in_month(month[:id], year)).each do |day| %>
-								<% unless @last_date.month == month[:id] %>
+								<% unless @last_date.month == month[:id] and @last_date.day == day %>
 									<option value="<%= day %>/<%= month[:id] %>">
 										<%= "#{month[:name].first(3)} #{day}" %>
 									</option>

@@ -15,7 +15,7 @@ class TweetsVisualizerController < ApplicationController
   	@last_date = @markers.last.created_at
   	@years = (@first_date.year..@last_date.year).to_a
   	@months = []
-  	(1..12).each {|m| @months << {id: m, name: Date::MONTHNAMES[m]} }
+  	(@first_date.month..@last_date.month).each {|m| @months << {id: m, name: Date::MONTHNAMES[m]} }
 	end
 
 	def get_markers_from_tweets tweets
