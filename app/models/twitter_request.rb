@@ -6,4 +6,8 @@ class TwitterRequest
 
 	belongs_to :search
 	belongs_to :twitter_credential
+
+	def get_time_last_request opts={}
+
+	end
 end

@@ -58,7 +58,7 @@ class TwitterUsersController < ApplicationController
   def destroy
     @twitter_user.destroy
     respond_to do |format|
-      format.html { redirect_to twitter_users_url, notice: 'Twitter user was successfully destroyed.' }
+      format.html { redirect_to @twitter_user, notice: 'Twitter user was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

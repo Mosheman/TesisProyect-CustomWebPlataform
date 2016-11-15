@@ -15,4 +15,16 @@ class Tweet
 
   belongs_to :search
   belongs_to :package
+
+  def get_alternative_geo
+    self.twitters_tweet[:place] ? self.twitters_tweet[:place][:bounding_box][:coordinates].first.first : nil
+  end
+
+  def get_latitude
+    self.twitters_tweet[:geo] ? self.twitters_tweet[:geo][:coordinates][0] : self.get_alternative_geo[1]
+  end
+
+  def get_longitude
+    self.twitters_tweet[:geo] ? self.twitters_tweet[:geo][:coordinates][1] : self.get_alternative_geo[0]
+  end
 end

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :packages
     resources :studies
     get "tweets_visualizer/index", to: "tweets_visualizer#index"
+    get "tusers_visualizer/index", to: "tusers_visualizer#index"
   end
 
   resources :searches do

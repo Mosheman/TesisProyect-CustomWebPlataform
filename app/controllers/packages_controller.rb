@@ -5,7 +5,7 @@ class PackagesController < ApplicationController
   # GET /packages
   # GET /packages.json
   def index
-    @packages = current_user.packages
+    @packages = current_user.packages.order('created_at DESC')
   end
 
   # GET /packages/1

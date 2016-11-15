@@ -8,4 +8,8 @@ class Queue
   embedded_in :user
 
   has_many :searches
+
+  def get_on_hold opts={}
+
+  end
 end

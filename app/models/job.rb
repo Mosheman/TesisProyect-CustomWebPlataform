@@ -8,4 +8,7 @@ class Job
   field :progress, type: String
 
   embedded_in :search
+
+  def get_failed opt={}
+  end
 end
